@@ -3,16 +3,12 @@
 
 {% block page_body %}
 
-<div class="row">
-  <div class="col-md-8 d-none d-md-block mt-5 p-3">
-    <img src="{{ url_for('static', filename='images/undraw_sign_up_n6im.svg')}}"
-      class="img-fluid d-none d-md-block ms-5" alt="sign-in">
-  </div>
+<div class="g-6 d-flex justify-content-center align-items-center overflow-hidden">
   <div class="col-md-4">
     <main class="form-signin w-100 m-auto mt-5 p-3">
-      <form action="{{ url_for('register') }}" method="post">
+      <form action="" method="post">
         <div class="text-center mb-4">
-          <img class="mb-4" src="{{ url_for('static', filename='images/icon.png') }}" height="60" alt="logo">
+          <img class="mb-4" src="{{ url_for('static', filename='images/logo.png') }}" height="100" alt="logo">
           <h1 class="h3 mb-3 fw-normal text-light">Créer un compte</h1>
         </div>
         {{ csrf_token }}
@@ -37,4 +33,4 @@
   </div>
 </div>
 
-{% endblock %}m!p https://open.spotify.com/intl-fr/track/2SdQaNhzwfzEhutmytuv18?si=30de1bf781914622
+{% endblock %}

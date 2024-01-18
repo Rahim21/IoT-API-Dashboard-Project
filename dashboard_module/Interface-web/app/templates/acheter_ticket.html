@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
-{% block title %}Acheter un ticket{% endblock %}
+{% block title %}Buy a ticket{% endblock %}
 
 {% block page_body %}
 
-<h1 class="text-center title">Acheter un ticket</h1>
+<h1 class="text-center title">Buy a ticket</h1>
 
 <div class="row g-6 justify-content-center border rounded-3 shadow-lg p-4 mx-5 mb-5">
     <div class="col-md-7 col-lg-8">
         <form class="needs-validation" novalidate>
             <div class="row g-3 text-white">
                 <div class="col-sm-6">
-                    <label for="firstName" class="form-label">Prénom</label>
+                    <label for="firstName" class="form-label">First name</label>
                     <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
                     <div class="invalid-feedback">
                         Un prénom valide est requis.
@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <label for="lastName" class="form-label">Nom</label>
+                    <label for="lastName" class="form-label">Last name</label>
                     <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
                     <div class="invalid-feedback">
                         Un nom valide est requis.
@@ -26,12 +26,12 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <label for="lastName" class="form-label">Type du ticket</label>
+                    <label for="type" class="form-label">Type of ticket</label>
                     <select class="form-select" aria-label="Default select example">
-                        <option selected>Choisir un type de ticket</option>
-                        <option value="1">Ticket normal</option>
-                        <option value="2">Ticket étudiant</option>
-                        <option value="3">Ticket enfant</option>
+                        <option selected>Choose a type of ticket</option>
+                        <option value="1">Normal ticket</option>
+                        <option value="2">Student ticket</option>
+                        <option value="3">Child ticket</option>
                     </select>
                     <div class="invalid-feedback">
                         Un type valide est requis.
@@ -39,14 +39,12 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <label for="lastName" class="form-label">Durée du ticket</label>
+                    <label for="duree" class="form-label">Duration of ticket</label>
                     <select class="form-select" aria-label="Default select example">
-                        <option selected>Choisir une Durée de ticket</option>
+                        <option selected>Choose a duration of ticket</option>
                         <option value="1">1 h</option>
-                        <option value="2">1 jour</option>
-                        <option value="3">1 semaine</option>
-                        <option value="4">un mois</option>
-                        <option value="5">un an</option>
+                        <option value="2">1 day</option>
+                        <option value="3">1 week</option>
                     </select>
                     <div class="invalid-feedback">
                         Un type valide est requis.
@@ -54,14 +52,14 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <label for="lastName" class="form-label">Nombre de ticket</label>
+                    <label for="nombre" class="form-label">Number of ticket</label>
                     <input type="number" class="form-control" id="lastName" placeholder="" value="" required>
                     <div class="invalid-feedback">
                         Un nombre valide est requis.
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button class="main-btn btn" type="submit">Acheter</button>
+                    <button class="main-btn btn" type="submit">Buy ticket</button>
                 </div>
             </div>
         </form>

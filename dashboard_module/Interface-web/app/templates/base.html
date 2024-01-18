@@ -24,21 +24,29 @@
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0" id="header">
           <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
-          <li><a href="{{url_for('acheter_ticket')}}" class="nav-link px-2 text-secondary">Acheter un ticket</a></li>
+          <li><a href="{{url_for('acheter_ticket')}}" class="nav-link px-2 text-secondary">Buy Ticket</a></li>
 
-          <li class="nav-item">
-            <a class="nav-link px-2 text-secondary" href="{{url_for('administrator')}}">Espace administrateur</a>
+          <li>
+            <a href="{{url_for('acheter_abonnement')}}" class="nav-link px-2 text-secondary">Take out a subscription</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link px-2 text-secondary" href="{{url_for('dashboard')}}">Liste films communauté</a>
+            <a class="nav-link px-2 text-secondary" href="{{url_for('administrator')}}">Admin Dashboard</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link px-2 text-secondary" href="{{url_for('dashboard')}}">Dashboard</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link px-2 text-secondary" href="{{url_for('profil')}}">My profil</a>
           </li>
         </ul>
 
         <div class="text-end">
-          <a href="{{url_for('login')}}" class="btn btn-outline-light me-2">Connexion</a>
+          <a href="{{url_for('login')}}" class="btn btn-outline-light me-2">Log in</a>
           <a href="{{url_for('register')}}" class="btn btn-warning insc-btn"
-            style="background-color: #AB0014 !important;">S'inscrire</a>
+            style="background-color: #AB0014 !important;">Register</a>
         </div>
       </div>
     </div>

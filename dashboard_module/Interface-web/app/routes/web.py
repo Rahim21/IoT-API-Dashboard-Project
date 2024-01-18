@@ -16,11 +16,14 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     return render_template("login.html")
-# Route pour la récupération des films d'une API externe
+
 @app.route("/acheter_ticket", methods=['GET', 'POST'])
 def acheter_ticket():
     return render_template('acheter_ticket.html')
 
+@app.route("/acheter_abonnement", methods=['GET', 'POST'])
+def acheter_abonnement():
+    return render_template('acheter_abonnement.html')
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
@@ -32,4 +35,6 @@ def administrator():
     return render_template("administrator.html")
 
 # mon profils
-
+@app.route("/profil")
+def profil():
+    return render_template('profil.html')
