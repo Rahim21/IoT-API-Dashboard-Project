@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}S'inscrire{% endblock %}
+
+{% block page_body %}
+
+<div class="row">
+  <div class="col-md-8 d-none d-md-block mt-5 p-3">
+    <img src="{{ url_for('static', filename='images/undraw_sign_up_n6im.svg')}}"
+      class="img-fluid d-none d-md-block ms-5" alt="sign-in">
+  </div>
+  <div class="col-md-4">
+    <main class="form-signin w-100 m-auto mt-5 p-3">
+      <form action="{{ url_for('register') }}" method="post">
+        <div class="text-center mb-4">
+          <img class="mb-4" src="{{ url_for('static', filename='images/icon.png') }}" height="60" alt="logo">
+          <h1 class="h3 mb-3 fw-normal text-light">Créer un compte</h1>
+        </div>
+        {{ csrf_token }}
+        <div class="form-floating">
+          <input type="text" name="username" class="form-control" required>
+          <label for="username">Nom d'utilisateur</label>
+        </div>
+        &nbsp;
+        <div class="form-floating">
+          <input type="password" name="password" class="form-control" required>
+          <label for="password">Mot de passe</label>
+        </div>
+        &nbsp;
+        {% if next %}<input type="hidden" name="next" value="{{next}}">{% endif %}
+        <div class="form-floating">
+          <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+          <label for="confirm_password">Confirmer le mot de passe</label>
+        </div>
+        <input type="submit" value="Créer un compte" class="btn main-btn mt-3">
+      </form>
+    </main>
+  </div>
+</div>
+
+{% endblock %}m!p https://open.spotify.com/intl-fr/track/2SdQaNhzwfzEhutmytuv18?si=30de1bf781914622
