@@ -1,27 +1,40 @@
 version: '3.7'
 
 services:
-<<<<<<< HEAD
-  iot:
-    build:
-      context: ./iot_module
-    image: iot
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
     ports:
-      - "5030:5030"
+      - "1883:1883"
     volumes:
-      - ./iot_module/.:/app
-=======
-  flask-app:
-    image: flask-app
-    build: ./dashboard_module/Interface-web
-    ports:
-      - 5000:5000
-    volumes:
-      - ./dashboard_module/Interface-web/app/.:/app
-  mongo:
+      - ./iot_module/mosquitto/config/:/mosquitto/config/
+
+  publisher:
     build:
-      context: ./dashboard_module/mongo
+      context: ./iot_module/publisher
       dockerfile: Dockerfile
-    ports:
-      - "27017:27017"
->>>>>>> dashboard
+    container_name: mqtt_publisher
+    depends_on:
+      - mosquitto
+
+  subscriber:
+    build:
+      context: ./iot_module/subscriber
+      dockerfile: Dockerfile
+    container_name: mqtt_subscriber
+    depends_on:
+      - mosquitto
+
+  # flask-app:
+  #   image: flask-app
+  #   build: ./dashboard_module/Interface-web
+  #   ports:
+  #     - 5000:5000
+  #   volumes:
+  #     - ./dashboard_module/Interface-web/app/.:/app
+  # mongo:
+  #   build:
+  #     context: ./dashboard_module/mongo
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "27017:27017"
