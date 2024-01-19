@@ -11,8 +11,12 @@ app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 secret_key= secrets.token_urlsafe(16)
 app.config['SECRET_KEY'] = secret_key
-ip = "10.11.9.49"
-api_url = "http://"+ip+":5100"
+
+# Configuration de la base de données MongoDB
+client = MongoClient('mongodb://10.11.9.49:27017/')
+db = client['metro_tickets']
+users = db['users']
+tickets_collection = db['tickets']
 
 from routes.web import *
 from routes.auth import *

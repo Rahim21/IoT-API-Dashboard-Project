@@ -11,11 +11,7 @@ class User(UserMixin):
         # Example: fetch user from the database by user_id
         return users.get(user_id)
 
-# Configuration de la base de données MongoDB
-client = MongoClient('mongodb://10.11.9.49:27017/')
-db = client['metro_tickets']
-users = db['users']
-tickets_collection = db['tickets']
+
 
 #initialisation de login_manager
 login_manager = LoginManager()
