@@ -26,6 +26,7 @@
           <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
           <li><a href="{{url_for('acheter_ticket')}}" class="nav-link px-2 text-secondary">Buy Ticket</a></li>
 
+          {% if current_user.is_authenticated %}
           <li>
             <a href="{{url_for('acheter_abonnement')}}" class="nav-link px-2 text-secondary">Take out a subscription</a>
           </li>
@@ -41,12 +42,22 @@
           <li class="nav-item">
             <a class="nav-link px-2 text-secondary" href="{{url_for('profil')}}">My profil</a>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link px-2 text-secondary" href="{{url_for('simulation')}}">Simulation</a>
+          </li>
+          {% endif %}
         </ul>
 
         <div class="text-end">
+          {% if current_user.is_authenticated %}
+          <a href="{{url_for('logout')}}" class="btn btn-outline-light me-2">Log out</a>
+
+          {% else %}
           <a href="{{url_for('login')}}" class="btn btn-outline-light me-2">Log in</a>
           <a href="{{url_for('register')}}" class="btn btn-warning insc-btn"
             style="background-color: #AB0014 !important;">Register</a>
+          {% endif %}
         </div>
       </div>
     </div>

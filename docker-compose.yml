@@ -8,3 +8,9 @@ services:
       - 5000:5000
     volumes:
       - ./dashboard_module/Interface-web/app/.:/app
+  mongo:
+    build:
+      context: ./dashboard_module/mongo
+      dockerfile: Dockerfile
+    ports:
+      - "27017:27017"
