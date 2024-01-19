@@ -1,6 +1,7 @@
-version: '3.1'
+version: '3.7'
 
 services:
+<<<<<<< HEAD
   iot:
     build:
       context: ./iot_module
@@ -9,3 +10,18 @@ services:
       - "5030:5030"
     volumes:
       - ./iot_module/.:/app
+=======
+  flask-app:
+    image: flask-app
+    build: ./dashboard_module/Interface-web
+    ports:
+      - 5000:5000
+    volumes:
+      - ./dashboard_module/Interface-web/app/.:/app
+  mongo:
+    build:
+      context: ./dashboard_module/mongo
+      dockerfile: Dockerfile
+    ports:
+      - "27017:27017"
+>>>>>>> dashboard
