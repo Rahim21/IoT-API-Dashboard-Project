@@ -2,8 +2,6 @@ from qrcode import make
 from pyzbar.pyzbar import decode
 from PIL import Image
 
-
-
 class Qrcode:
     def __init__(self):
         pass
@@ -15,7 +13,5 @@ class Qrcode:
         return img
 
     def decode_qrcode(self,img):
-        data = decode(Image.open('./'+img+'.png'))
+        data = decode(Image.open('./'+img+'.png')) # donner le choix au format 
         print("data {}, type {}".format(data[0].data,type(data[0].data)))
-
-        # Requête vers la BDD

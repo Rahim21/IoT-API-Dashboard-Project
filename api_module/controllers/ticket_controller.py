@@ -13,7 +13,7 @@ class TicketController:
             tickets = TicketService.get_tickets()
             return jsonify({"statusCode": 200, "tickets": tickets})
         except Exception as e:
-            return jsonify({"statusCode": 500, "error": "Erreur interne. Veuillez réessayer plus tard."})
+            return jsonify({"statusCode": 500, "error": f"Erreur interne. {str(e)}"})
 
     @staticmethod
     def get_ticket(ticket_id):
@@ -23,7 +23,7 @@ class TicketController:
                 return jsonify({"statusCode": 200, "ticket": None})
             return jsonify({"statusCode": 200, "ticket": ticket})
         except Exception as e:
-            return jsonify({"statusCode": 500, "error": "Erreur interne. Veuillez réessayer plus tard."})
+            return jsonify({"statusCode": 500, "error": f"Erreur interne. {str(e)}"})
 
     @staticmethod
     def add_ticket(ticket_data):
@@ -34,7 +34,7 @@ class TicketController:
             else:
                 return jsonify({"statusCode": 400, "error": "Erreur lors de l'ajout du film."})
         except Exception as e:
-            return jsonify({"statusCode": 500, "error": "Erreur interne. Veuillez réessayer plus tard."})
+            return jsonify({"statusCode": 500, "error": f"Erreur interne. {str(e)}"})
 
     @staticmethod
     def edit_ticket(ticket_id, updated_data):
@@ -44,7 +44,7 @@ class TicketController:
                 return jsonify({"statusCode": 200, "ticket": None})
             return jsonify({"statusCode": 200, "ticket": ticket})
         except Exception as e:
-            return jsonify({"statusCode": 500, "error": "Erreur interne. Veuillez réessayer plus tard."})
+            return jsonify({"statusCode": 500, "error": f"Erreur interne. {str(e)}"})
 
     @staticmethod
     def delete_ticket(ticket_id):
@@ -54,4 +54,4 @@ class TicketController:
                 return jsonify({"statusCode": 200, "ticket": None})
             return jsonify({"statusCode": 200, "ticket": ticket})
         except Exception as e:
-            return jsonify({"statusCode": 500, "error": "Erreur interne. Veuillez réessayer plus tard."})
+            return jsonify({"statusCode": 500, "error": f"Erreur interne. {str(e)}"})
