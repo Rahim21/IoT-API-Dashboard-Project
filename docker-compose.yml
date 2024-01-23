@@ -1,29 +1,25 @@
 version: '3.7'
 
 services:
-  mosquitto:
-    image: eclipse-mosquitto
-    container_name: mosquitto
-    ports:
-      - "1883:1883"
-    volumes:
-      - ./iot_module/mosquitto/config/:/mosquitto/config/
+  # mosquitto:
+  #   image: eclipse-mosquitto
+  #   container_name: mosquitto
+  #   ports:
+  #     - "1883:1883"
+  #   volumes:
+  #     - ./iot_module/mosquitto/config/:/mosquitto/config/
 
   publisher:
     build:
       context: ./iot_module/publisher
       dockerfile: Dockerfile
     container_name: mqtt_publisher
-    depends_on:
-      - mosquitto
 
   subscriber:
     build:
       context: ./iot_module/subscriber
       dockerfile: Dockerfile
     container_name: mqtt_subscriber
-    depends_on:
-      - mosquitto
 
   # flask-app:
   #   image: flask-app

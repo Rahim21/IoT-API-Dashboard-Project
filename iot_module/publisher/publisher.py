@@ -1,17 +1,22 @@
+import paho.mqtt.publish as publish
 import time
-import paho.mqtt.client as mqtt
 
-def on_publish(client, userdata, mid):
-    print("Message Published")
+# Définir les détails du broker MQTT
+broker_address = "test.mosquitto.org"
+port = 1883
+topic = "topic/test"
 
-# mqttBroker = "mqtt.eclipseprojects.io"
-client = mqtt.Client()
-client.connect("mosquitto", 1883, 60)
-# client.connect(mqttBroker)
+# Fonction pour envoyer un message
+def publish_message(message):
+    publish.single(topic, message, hostname=broker_address, port=port)
+    print(f"Message publié: {message}")
 
-client.on_publish = on_publish
-
-while True:
-    message = "Hello from Publisher"
-    result = client.publish("topic/test", message)
-    time.sleep(5)
+if __name__ == "__main__":
+    try:
+        while True:
+            message = "Hello"
+            if message.lower() == 'exit':
+                break
+            publish_message(message)
+    except KeyboardInterrupt:
+        print("Interruption du programme.")

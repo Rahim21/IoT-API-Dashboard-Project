@@ -1,22 +1,36 @@
-import time
 import paho.mqtt.client as mqtt
+import time
 
-def on_connect(client, userdata, flags, rc):
-    print(f"Connected with result code {rc}")
-    client.subscribe("topic/test")
+# Définir les détails du broker MQTT
+broker_address = "test.mosquitto.org"
+port = 1883
+topic = "topic/test"
 
+# Fonction de rappel lorsqu'un message est reçu
 def on_message(client, userdata, msg):
-    print(f"Received message: {msg.payload.decode()}")
-    
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
+    print(f"Message reçu sur le sujet '{msg.topic}': {msg.payload.decode()}")
 
-# Ajout d'une pause de 2 secondes avant la connexion
-time.sleep(2)
+if __name__ == "__main__":
+    # Créer une instance du client MQTT
+    client = mqtt.Client()
 
-# Connexion au broker Mosquitto
-client.connect("mosquitto", 1883, 60)
+    # Configurer la fonction de rappel pour la réception des messages
+    client.on_message = on_message
 
-# Lancement de la boucle de réception des messages
-client.loop_forever()
+    # Se connecter au broker MQTT
+    client.connect(broker_address, port=port)
+
+    # S'abonner au sujet spécifié
+    client.subscribe(topic)
+
+    # Démarrer la boucle de communication
+    client.loop_start()
+
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        # Arrêter la boucle de communication et déconnecter le client en cas d'interruption du programme
+        client.loop_stop()
+        client.disconnect()
+        print("Interruption du programme.")
