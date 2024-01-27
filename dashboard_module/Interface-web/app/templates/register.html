@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}S'inscrire{% endblock %}
+
+{% block page_body %}
+
+<div class="g-6 d-flex justify-content-center align-items-center overflow-hidden">
+  <div class="col-md-4">
+    <main class="form-signin w-100 m-auto mt-5 p-3">
+      <form action="{{ url_for('register') }}" method="POST">
+        <div class="text-center mb-4">
+          <img class="mb-4" src="{{ url_for('static', filename='images/logo.png') }}" height="100" alt="logo">
+          <h1 class="h3 mb-3 fw-normal text-light">Créer un compte</h1>
+        </div>
+        {{ csrf_token }}
+        <div class="form-floating">
+          <input type="text" name="username" class="form-control" required>
+          <label for="username">Nom d'utilisateur</label>
+        </div>
+        &nbsp;
+        <div class="form-floating">
+          <input type="password" name="password" class="form-control" required>
+          <label for="password">Mot de passe</label>
+        </div>
+        &nbsp;
+        {% if next %}<input type="hidden" name="next" value="{{next}}">{% endif %}
+        <div class="form-floating">
+          <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+          <label for="confirm_password">Confirmer le mot de passe</label>
+        </div>
+        <input type="submit" value="Créer un compte" class="btn main-btn mt-3">
+      </form>
+    </main>
+  </div>
+</div>
+
+{% endblock %}

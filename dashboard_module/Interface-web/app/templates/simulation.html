@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Simulation{% endblock %}
+
+{% block page_body %}
+
+<h1 class="text-center title">Simulation</h1>
+
+<div class="row g-6 justify-content-center border rounded-3 shadow-lg p-4 mx-5 mb-5">
+    <div class="col-md-4 col-lg-8">
+        <img src="{{ url_for('static', filename='images/porte.png') }}" alt="plan">
+        <img src="{{ url_for('static', filename='images/Stop.png') }}" alt="plan" style="height: 45px;">
+        <!-- <img src="{{ url_for('static', filename='images/Go.png') }}" alt="plan" style="position: absolute;height: 45px;top: 343px;left: 386px;"> -->
+        <div class="col-md-8 mt-5 text-white">
+            <p> Il faut scanner le QR code sur votre ticket pour pouvoir accéder </p>
+            <!-- <p> Votre ticket est valide, vous pouvez accéder </p> -->
+            <button type="button" class="btn main-btn btn-lg btn-block mt-3"> <i class="bi bi-qr-code-scan me-2"></i> Scan
+                QR
+                code</button>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+{% endblock %}
