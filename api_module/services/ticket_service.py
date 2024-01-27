@@ -14,6 +14,49 @@ class TicketService:
         collection = g.db["tickets"]
         tickets = collection.find()
         return str(list(tickets))
+    
+    @staticmethod 
+    def calculate_price(ticket_type,person_type): 
+        prices = { 
+            "1H": 1.0, 
+            "2H": 1.8, 
+            "1D": 4.0, 
+            "1W": 15.0, 
+            "1M": 40.0, 
+            "6M": 200.0, 
+            "1Y": 350.0, 
+        }
+
+        type_multiplier = {
+            "C": 0.5,   # Enfant
+            "A": 1,     # Adulte
+            "S": 0.8,   # Etudiant
+            "O": 0.7,   # Senior
+        }
+        price = prices.get(ticket_type)*type_multiplier.get(person_type)
+        return price if price else False
+
+    @staticmethod 
+    def create_name(ticket_type,person_type): 
+        duration = { 
+            "1H": "une heure", 
+            "2H": "deux heures", 
+            "1D": "une journée", 
+            "1W": "une semaine", 
+            "1M": "un mois", 
+            "6M": "six mois", 
+            "1Y": "un an", 
+        }
+
+        type = {
+            "C": "enfant",   
+            "A": "adulte",    
+            "S": "étudiant", 
+            "O": "senior",
+        }
+        name = "Ticket"+type.get(person_type)+duration.get(ticket_type)
+        return name
+
 
     @staticmethod
     def get_ticket(ticket_id):
@@ -34,14 +77,18 @@ class TicketService:
         expiration_date = (
             datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S.%f") + expiration_duration
         ).isoformat()
+        price = TicketService.calculate_price(ticket_data.get("ticket_type"),ticket_data.get("person_type"))
+        name = TicketService.create_name(ticket_data.get("ticket_type"),ticket_data.get("person_type"))
 
         new_ticket = Ticket(
-            name=ticket_data["name"],
+            name=name,
             ticket_type=ticket_data["ticket_type"],
             created_at=start_date,
             # expires_at=(datetime.utcnow() + timedelta(hours=1)).isoformat(),
             expires_at=expiration_date,
-            user_id=user_id
+            user_id=user_id,
+            price=price,
+            person_type=ticket_data["person_type"]
         )
         collection.insert_one(new_ticket.__dict__)
         return str(new_ticket.__dict__)
