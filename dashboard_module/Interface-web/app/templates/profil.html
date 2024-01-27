@@ -58,6 +58,13 @@
                             </div>
                         </div>
                     </div>
+                    <h4> Mes tickets</h4>
+                    {% for ticket in tickets %}
+                        <div>
+                            <p> {{ ticket.name }} </p>
+                            <p> {{ ticket.ticket_type }} </p>
+                            <p> date d'expiration : {{ ticket.expiration_date }} </p>
+                        </div>
 
                     <div class="text-left mt-3 mb-3 ml-4">
                         <button type="button" class="main-btn btn">Save changes</button>&nbsp;
