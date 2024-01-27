@@ -1,49 +1,36 @@
-version: '3.1'
+version: '3.7'
 
 services:
+  # mosquitto:
+  #   image: eclipse-mosquitto
+  #   container_name: mosquitto
+  #   ports:
+  #     - "1883:1883"
+  #   volumes:
+  #     - ./iot_module/mosquitto/config/:/mosquitto/config/
 
-  api:
+  publisher:
     build:
-      context: ./api_module
-    image: api
-    ports:
-      - "5010:5010"
-    volumes:
-      - ./api_module/.:/app
+      context: ./iot_module/publisher
+      dockerfile: Dockerfile
+    container_name: mqtt_publisher
 
-  dashboard:
+  subscriber:
     build:
-      context: ./dashboard_module
-    image: dashboard
-    ports:
-      - "5020:5020"
-    volumes:
-      - ./dashboard_module/.:/app
+      context: ./iot_module/subscriber
+      dockerfile: Dockerfile
+    container_name: mqtt_subscriber
 
-  iot:
-    build:
-      context: ./iot_module
-    image: iot
-    ports:
-      - "5030:5030"
-    volumes:
-      - ./iot_module/.:/app
-
-  mongo:
-    image: mongo
-    restart: always
-    ports:
-      - 27017:27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-  
-  mongo-express:
-    image: mongo-express
-    restart: always
-    ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+  # flask-app:
+  #   image: flask-app
+  #   build: ./dashboard_module/Interface-web
+  #   ports:
+  #     - 5000:5000
+  #   volumes:
+  #     - ./dashboard_module/Interface-web/app/.:/app
+  # mongo:
+  #   build:
+  #     context: ./dashboard_module/mongo
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "27017:27017"
