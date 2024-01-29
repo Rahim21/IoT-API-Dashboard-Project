@@ -3,11 +3,39 @@ from app import *
 @login_manager.user_loader
 def load_user(user_id):
     response = requests.get(api_url+"/users/"+user_id)
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         user = User(response.json())
         return user
     else:
         return None
+    
+@app.route("/get_users", methods=["POST"])
+def get_users():
+    
+    response = requests.get(api_url+"/users/")
+    
+    reference = request.headers.get("Referer")
+    
+    if response.json().get("statusCode") in [200, 201]:
+        flash("Account edited successfully.", "success")
+        return redirect(reference)
+    else:
+        flash("An error occurred. Please try again later.", "danger")
+        return redirect(reference)
+    
+@app.route("/get_user", methods=["POST"])
+def get_user():
+    
+    user_id = current_user.id
+   
+    
+    if response.json().get("statusCode") in [200, 201]:
+        flash("Account edited successfully.", "success")
+        return redirect(reference)
+    else:
+        flash("An error occurred. Please try again later.", "danger")
+        return redirect(reference)
+    
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -32,7 +60,7 @@ def login():
 @app.route('/logout')
 def logout():
     response = requests.get(api_url+"/users/logout")
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         logout_user()
         flash('Logout successful', 'success')
     else:
@@ -50,11 +78,6 @@ def register():
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
 
-        # Check if the username already exists
-        if users.find_one({"username": username}):
-            flash("Username already exists. Please choose a different username.", "danger")
-            return redirect(url_for("register"))
-
         # Check if passwords match
         if password != confirm_password:
             flash("Passwords do not match. Please enter matching passwords.", "danger")
@@ -66,7 +89,7 @@ def register():
         
         response = requests.post(api_url+"/users/register", json=data)
         
-        if response.status_code == 201:
+        if response.json().get("statusCode") in [200, 201]:
             flash("Account created successfully. Please login.", "success")
             return redirect(url_for("login"))
         else:
@@ -93,7 +116,7 @@ def edit_user():
 
         response = requests.put(api_url+"/users/"+current_user.id+"/edit", json=data)
         
-        if response.status_code == 200:
+        if response.json().get("statusCode") in [200, 201]:
             flash("Account edited successfully.", "success")
             return redirect(url_for("index"))
         else:
@@ -102,33 +125,7 @@ def edit_user():
 
     return render_template("index.html")
 
-@app.route("/get_users", methods=["POST"])
-def get_users():
-    
-    response = requests.get(api_url+"/users/")
-    
-    reference = request.headers.get("Referer")
-    
-    if response.status_code == 200:
-        flash("Account edited successfully.", "success")
-        return redirect(reference)
-    else:
-        flash("An error occurred. Please try again later.", "danger")
-        return redirect(reference)
-    
-@app.route("/get_user", methods=["POST"])
-def get_user():
-    
-    user_id = current_user.id
-   
-    
-    if response.status_code == 200:
-        flash("Account edited successfully.", "success")
-        return redirect(reference)
-    else:
-        flash("An error occurred. Please try again later.", "danger")
-        return redirect(reference)
-    
+
 @app.route("/get_user_tickets", methods=["POST"])
 def get_user_tickets():
     
@@ -138,7 +135,7 @@ def get_user_tickets():
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Account edited successfully.", "success")
         return redirect(reference)
     else:
@@ -153,7 +150,7 @@ def deactivate_user():
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Account deactivated successfully.", "success")
         return redirect(reference)
     else:
@@ -169,7 +166,7 @@ def delete_user():
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Account deleted successfully.", "success")
         return redirect(reference)
     else:

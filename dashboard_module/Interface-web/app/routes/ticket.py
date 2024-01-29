@@ -7,7 +7,7 @@ def get_tickets():
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Tickets retrieved successfully.", "success")
         return redirect(reference)
     else:
@@ -23,7 +23,7 @@ def get_ticket():
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Ticket retrieved successfully.", "success")
         return redirect(reference)
     else:
@@ -43,7 +43,7 @@ def add_ticket():
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Ticket added successfully.", "success")
         return redirect(reference)
     else:
@@ -63,7 +63,7 @@ def edit_ticket():
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Ticket edited successfully.", "success")
         return redirect(reference)
     else:
@@ -79,7 +79,7 @@ def delete_ticket():
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Ticket deleted successfully.", "success")
         return redirect(reference)
     else:

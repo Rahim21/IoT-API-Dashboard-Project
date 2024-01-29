@@ -2,7 +2,7 @@
 # Auteurs: BERTRAND Hugo & DRIOUCHE Sami & HAYAT Rahim & MTARFI Souhail
 # -----------------------------------------------------------------------------
 # app.py
-from flask import Flask, g
+from flask import Flask, g , jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
 
@@ -15,7 +15,7 @@ app.secret_key = 'IAD'
 CORS(app) # accepter des requêtes provenant de domaines différents
 
 # Connexion à MongoDB
-mongo_client = MongoClient('mongodb://10.11.9.49', 27017) # Avec authentification: , username='root', password='example')
+mongo_client = MongoClient('mongodb://root:example@10.11.9.49', 27017) # Avec authentification: , username='root', password='example')
 db = mongo_client['TicketLink']
 
 # On stocke l'objet db dans le contexte global g
@@ -25,8 +25,8 @@ def before_request():
     g.db = db
 
 # Méthode pour lister les bases de données et collections
-# print(mongo_client.list_database_names())
-# print(db.list_collection_names())
+print(mongo_client.list_database_names())
+print(db.list_collection_names())
 
 # Routes
 app.register_blueprint(user_blueprint, prefix='/users')

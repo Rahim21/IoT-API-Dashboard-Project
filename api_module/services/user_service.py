@@ -21,8 +21,8 @@ class UserService:
 
         # Création d'un nouvel utilisateur
         new_user = User(
-            email=user_data["email"],
-            password=user_data["password"],
+            email=user_data.get("email"),
+            password=user_data.get("password"),
             lastname=user_data.get("lastname"),
             firstname=user_data.get("firstname"),
             username=user_data.get("username"),

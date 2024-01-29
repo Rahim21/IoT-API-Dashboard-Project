@@ -5,13 +5,10 @@ def index():
     return render_template('index.html')
 
 @app.route("/acheter_ticket", methods=['GET', 'POST'])
+@login_required
 def acheter_ticket():
     return render_template('acheter_ticket.html')
 
-@app.route("/acheter_abonnement", methods=['GET', 'POST'])
-@login_required
-def acheter_abonnement():
-    return render_template('acheter_abonnement.html')
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
