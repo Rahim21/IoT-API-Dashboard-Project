@@ -15,7 +15,7 @@ app.secret_key = 'IAD'
 CORS(app) # accepter des requêtes provenant de domaines différents
 
 # Connexion à MongoDB
-mongo_client = MongoClient('mongodb://10.11.9.49', 27017) # Avec authentification: , username='root', password='example')
+mongo_client = MongoClient('mongodb://127.0.0.1', 27017) # Avec authentification: , username='root', password='example')
 db = mongo_client['TicketLink']
 
 # On stocke l'objet db dans le contexte global g

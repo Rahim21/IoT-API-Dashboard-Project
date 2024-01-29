@@ -10,7 +10,7 @@ secret_key= secrets.token_urlsafe(16)
 app.config['SECRET_KEY'] = secret_key
 login_manager = LoginManager(app)
 
-ip="10.11.9.49"
+ip="127.0.0.1"
 api_url = "http://"+ip+":5010"
 
 from routes.web import *

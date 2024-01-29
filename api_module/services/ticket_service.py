@@ -33,8 +33,9 @@ class TicketService:
             "S": 0.8,   # Etudiant
             "O": 0.7,   # Senior
         }
-        price = prices.get(ticket_type)*type_multiplier.get(person_type)
-        return price if price else False
+        ticket_type = prices.get(ticket_type, prices.get("1H"))
+        person_type = type_multiplier.get(person_type, type_multiplier.get("A"))
+        return ticket_type * person_type
 
     @staticmethod 
     def create_name(ticket_type,person_type): 
@@ -54,8 +55,7 @@ class TicketService:
             "S": "étudiant", 
             "O": "senior",
         }
-        name = "Ticket"+type.get(person_type)+duration.get(ticket_type)
-        return name
+        return f"Ticket {type.get(person_type, 'adulte')} ({duration.get(ticket_type, 'une heure')})"
 
 
     @staticmethod
@@ -84,11 +84,10 @@ class TicketService:
             name=name,
             ticket_type=ticket_data["ticket_type"],
             created_at=start_date,
-            # expires_at=(datetime.utcnow() + timedelta(hours=1)).isoformat(),
             expires_at=expiration_date,
             user_id=user_id,
             price=price,
-            person_type=ticket_data["person_type"]
+            person_type=ticket_data.get("person_type")
         )
         collection.insert_one(new_ticket.__dict__)
         return str(new_ticket.__dict__)

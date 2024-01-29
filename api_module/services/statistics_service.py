@@ -9,7 +9,7 @@ class StatisticsService:
     
     @staticmethod 
     def total_number_tickets():
-        return g.db["tickets"] .count_documents({})
+        return g.db["tickets"].count_documents({})
 
     @staticmethod 
     def repartition_types_tickets():
@@ -20,9 +20,13 @@ class StatisticsService:
     
     @staticmethod 
     def number_expired_tickets():
-        now = datetime.now()
-        query = {"expires_at": {"$lt": now}}
-        return g.db["tickets"].count_documents(query)
+        now = datetime.utcnow().isoformat()
+        query = [
+            {"$match": {"expires_at": {"$lt": now}}},
+            {"$group": {"_id": "$person_type", "count": {"$sum": 1}}},
+            {"$sort": {"_id": 1}}
+        ]
+        return list(g.db["tickets"].aggregate(query))
 
     @staticmethod
     def turnover():
