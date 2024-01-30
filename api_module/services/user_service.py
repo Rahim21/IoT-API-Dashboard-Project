@@ -42,19 +42,34 @@ class UserService:
     def get_user_by_credentials(email, password):
         # Récupération de l'utilisateur à l'aide du mail et mot de passe
         collection = g.db["users"]
-        user = collection.find_one({"email": email, "password": password})
+        user = collection.find_one({"email": email})
+        
+        if user:
+            # Vérification du mot de passe
+            if check_password_hash(user["password"], password):
+                return user
+            else:
+                return None
         return user
 
     @staticmethod
     def login_user(user_id):
-        # Connexion de l'utilisateur (Jeton JWT ou Session & Cookie lib python)
-        # Bien vérifier que is_active = True
-        pass
+        # Check if the user exists
+        collection = g.db["users"]
+        user = collection.find_one({"_id": ObjectId(user_id)})
+        
+        if user:
+            # Log in the user using Flask-Login
+            return True  # Return True to indicate a successful login
+        else:
+            return False  # Return False if the user does not exist
 
     @staticmethod
     def logout_user(response):
-        # Méthode de désconnexion
-        pass
+        
+        logout_user()
+        
+        return response
 
     @staticmethod
     def get_users():

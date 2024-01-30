@@ -5,7 +5,6 @@
 from flask import Flask, g , jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
-
 from routes.user_route import user_blueprint
 from routes.ticket_route import ticket_blueprint
 

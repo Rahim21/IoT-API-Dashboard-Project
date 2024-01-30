@@ -1,13 +1,31 @@
 from app import *
+from app import *
 
+class User(UserMixin):
+    def __init__(self, user_id, username, password):
+        self.id = user_id
+        self.username = username
+        self.password = password
+
+    @staticmethod
+    def get(user_id):
+        # Example: fetch user from the database by user_id
+        return users.get(user_id)
+    
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+    
 @login_manager.user_loader
 def load_user(user_id):
     response = requests.get(api_url+"/users/"+user_id)
-    if response.json().get("statusCode") in [200, 201]:
+    if response.status_code == 200:
         user = User(response.json())
         return user
     else:
         return None
+
+
     
 @app.route("/get_users", methods=["POST"])
 def get_users():
@@ -23,10 +41,9 @@ def get_users():
         flash("An error occurred. Please try again later.", "danger")
         return redirect(reference)
     
-@app.route("/get_user", methods=["POST"])
-def get_user():
+def get_user(user_id):
     
-    user_id = current_user.id
+    response = requests.get(api_url+"/users/"+user_id)
    
     
     if response.json().get("statusCode") in [200, 201]:
@@ -48,7 +65,13 @@ def login():
 
         response = requests.post(api_url+"/users/login", json=data)
         
-        if response.status_code == 201:
+        
+        
+        if response.json().get("statusCode") in [200, 201]:
+            user = response.json().get("user")
+            user_id = "4544"
+            user = User("4544", "4544","4544")
+            login_user(user)
             flash('Login successful', 'success')
             return redirect(url_for('index'))
         else:

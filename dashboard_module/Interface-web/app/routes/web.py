@@ -4,6 +4,7 @@ from app import *
 def index():      
     return render_template('index.html')
 
+
 @app.route("/acheter_ticket", methods=['GET', 'POST'])
 @login_required
 def acheter_ticket():
