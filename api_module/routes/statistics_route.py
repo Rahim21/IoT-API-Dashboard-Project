@@ -5,7 +5,7 @@
 from flask import Blueprint
 from controllers.statistics_controller import StatisticsController
 
-statistics_blueprint = Blueprint('statistics', __name__) 
+statistics_blueprint = Blueprint('statistics', __name__, url_prefix='/statistics')
 
 @statistics_blueprint.route('/total_number_tickets', methods=['GET']) 
 def total_number_tickets():
@@ -31,6 +31,6 @@ def most_active_users():
 def peak_usage_times():
     return StatisticsController.peak_usage_times()
 
-@statistics_blueprint.route('/most_popular_ticket_types', methods=['GET']) 
-def most_popular_ticket_types():
-    return StatisticsController.most_popular_ticket_types()
+@statistics_blueprint.route('/repartition_types_personnes', methods=['GET']) 
+def repartition_types_personnes():
+    return StatisticsController.repartition_types_personnes()

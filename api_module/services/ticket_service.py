@@ -55,7 +55,7 @@ class TicketService:
             "S": "étudiant", 
             "O": "senior",
         }
-        return f"Ticket {type.get(person_type, 'adulte')} ({duration.get(ticket_type, 'une heure')})"
+        return f"Ticket {type.get(person_type, 'adulte')}({duration.get(ticket_type, 'une heure')})"
 
 
     @staticmethod

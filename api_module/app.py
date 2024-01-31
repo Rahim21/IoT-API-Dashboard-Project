@@ -5,9 +5,9 @@
 from flask import Flask, g
 from flask_cors import CORS
 from pymongo import MongoClient
-
 from routes.user_route import user_blueprint
 from routes.ticket_route import ticket_blueprint
+from routes.statistics_route import statistics_blueprint
 
 app = Flask(__name__)
 
@@ -31,6 +31,7 @@ def before_request():
 # Routes
 app.register_blueprint(user_blueprint, prefix='/users')
 app.register_blueprint(ticket_blueprint, prefix='/tickets')
+app.register_blueprint(statistics_blueprint, prefix='/statistics')
 
 @app.route('/')
 def hello_world():

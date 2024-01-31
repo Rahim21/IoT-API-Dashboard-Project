@@ -62,9 +62,9 @@ class StatisticsController:
         
 
     @staticmethod
-    def most_popular_ticket_types():
+    def repartition_types_personnes():
         try:
-            most_popular_ticket_types = StatisticsService.most_popular_ticket_types()
-            return jsonify({"statusCode": 200, "most_popular_ticket_types": most_popular_ticket_types})
+            repartition_types_personnes = StatisticsService.repartition_types_personnes()
+            return jsonify({"statusCode": 200, "repartition_types_personnes": repartition_types_personnes})
         except Exception as e:
             return jsonify({"statusCode": 500, "error": f"Erreur interne. {str(e)}"})

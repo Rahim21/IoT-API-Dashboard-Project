@@ -4,7 +4,6 @@
 # services/statistics_service.py
 from flask import g
 from datetime import datetime
-
 class StatisticsService: 
     
     @staticmethod 
@@ -14,13 +13,31 @@ class StatisticsService:
     @staticmethod 
     def repartition_types_tickets():
         query = [
-            {"$group": {"_id": "$type", "count": {"$sum": 1}}}
+            {
+                "$group": {
+                "_id": "$ticket_type",
+                "count": { "$sum": 1 }
+                }
+            }
+        ]
+        return list(g.db["tickets"].aggregate(query))
+    
+    @staticmethod 
+    def repartition_types_personnes(): 
+        query = [
+            {
+                "$group": {
+                "_id": "$person_type",
+                "count": { "$sum": 1 }
+                }
+            }
         ]
         return list(g.db["tickets"].aggregate(query))
     
     @staticmethod 
     def number_expired_tickets():
         now = datetime.utcnow().isoformat()
+        #now = datetime.now()
         query = [
             {"$match": {"expires_at": {"$lt": now}}},
             {"$group": {"_id": "$person_type", "count": {"$sum": 1}}},
@@ -41,22 +58,37 @@ class StatisticsService:
     def most_active_users(): 
         query = [ 
             {"$group": {"_id": "$user_id", "count": {"$sum": 1}}}, 
-            {"$sort": {"count": -1}} 
+            {"$sort": {"count": -1}},
+            {"$limit": 3}  # Limiter aux 3 utilisateurs les plus actifs
         ]
-        return list(g.db["tickets"].aggregate(query))
+        return str(list(g.db["tickets"].aggregate(query)))
+        
 
     @staticmethod 
     def peak_usage_times(): 
-        query = [ 
-            {"$group": {"_id": {"$hour": "$created_at"}, "count": {"$sum": 1}}}, 
-            {"$sort": {"count": -1}} 
-        ]
+        query = [
+        {
+        "$addFields": {
+            "created_at": {
+                "$toDate": "$created_at"
+            }
+        }
+    },
+    {
+        "$group": {
+            "_id": {
+                "hour": {"$hour": "$created_at"},
+                "day_of_week": {"$dayOfWeek": "$created_at"}
+            },
+            "count": {"$sum": 1}
+        }
+    },
+    {
+        "$sort": {"count": -1}
+    },
+    {
+        "$limit": 3
+    }
+]
         return list(g.db["tickets"].aggregate(query))
     
-    @staticmethod 
-    def most_popular_ticket_types(): 
-        query = [ 
-            {"$group": {"_id": "$type", "count": {"$sum": 1}}}, 
-            {"$sort": {"count": -1}} 
-        ]
-        return list(g.db["tickets"].aggregate(query))
