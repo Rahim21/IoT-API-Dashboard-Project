@@ -1,29 +1,6 @@
 from app import *
-from app import *
 
-class User(UserMixin):
-    def __init__(self, user_id, username, password):
-        self.id = user_id
-        self.username = username
-        self.password = password
 
-    @staticmethod
-    def get(user_id):
-        # Example: fetch user from the database by user_id
-        return users.get(user_id)
-    
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-    
-@login_manager.user_loader
-def load_user(user_id):
-    response = requests.get(api_url+"/users/"+user_id)
-    if response.status_code == 200:
-        user = User(response.json())
-        return user
-    else:
-        return None
 
 
     
@@ -68,11 +45,10 @@ def login():
         
         
         if response.json().get("statusCode") in [200, 201]:
-            user = response.json().get("user")
-            user_id = "4544"
-            user = User("4544", "4544","4544")
-            login_user(user)
+            user_id = response.json().get("user_id")
             flash('Login successful', 'success')
+            session['logged_in'] = True
+            session['user_id'] = user_id
             return redirect(url_for('index'))
         else:
             flash('An error occurred. Please try again later.', 'danger')
@@ -82,13 +58,10 @@ def login():
 
 @app.route('/logout')
 def logout():
-    response = requests.get(api_url+"/users/logout")
-    if response.json().get("statusCode") in [200, 201]:
-        logout_user()
-        flash('Logout successful', 'success')
-    else:
-        flash('An error occurred. Please try again later.', 'danger')
-    return redirect(url_for('login'))
+    session.clear()
+    flash('Logout successful', 'success')
+
+    return render_template('login.html')
 
 # Route pour la création d'un compte
 @app.route("/register", methods=["GET", "POST"])

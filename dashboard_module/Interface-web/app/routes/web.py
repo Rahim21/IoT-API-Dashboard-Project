@@ -6,19 +6,16 @@ def index():
 
 
 @app.route("/acheter_ticket", methods=['GET', 'POST'])
-@login_required
 def acheter_ticket():
     return render_template('acheter_ticket.html')
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
-@login_required
 def dashboard():
     return render_template('dashboard.html')
 
 # Route de la page administrateur
 @app.route("/administrator")
-@login_required
 def administrator():
      
     response = requests.get(api_url+"/users/")
@@ -32,15 +29,15 @@ def administrator():
 
 # mon profils
 @app.route("/profil")
-@login_required
 def profil():
-    
-    response = requests.get(api_url+"/tickets/")
-    
-    return render_template('profil.html', tickets=response.json())
+    response = requests.get(api_url + "/tickets/")
+    if response.status_code in [200, 201]:
+        tickets = response.json()["tickets"]
+        ticket_json = json.dumps(tickets)
+        return render_template('profil.html', tickets=ticket_json)
+    return render_template('profil.html')
 
 # simulation
 @app.route("/simulation")
-@login_required
 def simulation():
     return render_template('simulation.html')

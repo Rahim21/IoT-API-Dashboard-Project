@@ -28,7 +28,7 @@ class UserController:
                 # Création d'un jeton JWT
                 auth = UserService.login_user(user['_id'])
                 if auth:
-                    return jsonify({"statusCode": 201 , "user": str(user)})
+                    return jsonify({"statusCode": 201 , "user_id": str(user['_id'])})
                 else:
                     return jsonify({"statusCode": 500, "error": "Erreur interne lors de la création du jeton."})
             else:

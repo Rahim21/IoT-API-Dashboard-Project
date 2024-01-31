@@ -67,8 +67,6 @@ class UserService:
     @staticmethod
     def logout_user(response):
         
-        logout_user()
-        
         return response
 
     @staticmethod

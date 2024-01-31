@@ -35,7 +35,7 @@ def add_ticket():
     
     name = request.form.get("name")
     ticket_type = request.form.get("ticket_type")
-    user_id = current_user.id
+    user_id = session.get("user_id")
     
     data = {"name":name, "ticket_type":ticket_type, "user_id":user_id}
     

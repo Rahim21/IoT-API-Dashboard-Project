@@ -24,12 +24,9 @@
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0" id="header">
           <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
-          {% if current_user.is_authenticated %}
+          {% if 'user_id' in session %}
           <li><a href="{{url_for('acheter_ticket')}}" class="nav-link px-2 text-secondary">Buy Ticket</a></li>
 
-          <li>
-            <a href="{{url_for('acheter_abonnement')}}" class="nav-link px-2 text-secondary">Take out a subscription</a>
-          </li>
 
           <li class="nav-item">
             <a class="nav-link px-2 text-secondary" href="{{url_for('administrator')}}">Admin Dashboard</a>
@@ -50,7 +47,7 @@
         </ul>
 
         <div class="text-end">
-          {% if current_user.is_authenticated %}
+          {% if  'user_id' in session %}
           <a href="{{url_for('logout')}}" class="btn btn-outline-light me-2">Log out</a>
 
           {% else %}

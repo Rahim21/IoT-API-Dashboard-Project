@@ -1,8 +1,7 @@
 from flask import Flask
 import secrets
 import requests
-from flask import jsonify, render_template, request, flash, redirect, url_for
-from flask_login import login_user, logout_user, current_user, login_required, LoginManager, UserMixin
+from flask import jsonify, render_template, request, flash, redirect, url_for, session
 import json
 
 app = Flask(__name__)
