@@ -108,7 +108,12 @@ class TicketService:
             price=price,
             person_type=ticket_data.get("person_type")
         )
-        
+        collection.insert_one(new_ticket.__dict__)
+        ticket = new_ticket.__dict__
+        ticket["_id"] = str(ticket["_id"])
+        ticket["user_id"] = str(ticket["user_id"]) if ticket["user_id"] else None
+        qr_code = TicketService.generate_qr_code(str(new_ticket._id)) 
+        return {"ticket": ticket, "qr_code": qr_code}
     
     # méthode à utiliser dans cette classe
     @staticmethod
