@@ -6,22 +6,8 @@ from models.ticket_model import Ticket
 from flask import g
 from bson import ObjectId
 from datetime import datetime, timedelta
-import qrcode
-import base64
-from io import BytesIO
 
 class TicketService:
-
-    @staticmethod 
-    def generate_qr_code(ticket_id): 
-        qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4, ) 
-        qr.add_data(ticket_id) 
-        qr.make(fit=True)
-        img = qr.make_image(fill='black', back_color='white') 
-        buffered = BytesIO() 
-        img.save(buffered, format="PNG") 
-        img_str = base64.b64encode(buffered.getvalue()).decode() 
-        return img_str
 
     @staticmethod
     def get_tickets():
@@ -103,9 +89,8 @@ class TicketService:
             price=price,
             person_type=ticket_data.get("person_type")
         )
-        collection.insert_one(new_ticket.__dict__) 
-        qr_code = TicketService.generate_qr_code(str(new_ticket._id)) 
-        return {"ticket": str(new_ticket.__dict__), "qr_code": qr_code}
+        collection.insert_one(new_ticket.__dict__)
+        return str(new_ticket.__dict__)
     
     # méthode à utiliser dans cette classe
     @staticmethod
