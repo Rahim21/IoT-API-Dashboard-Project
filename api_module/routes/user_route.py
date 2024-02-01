@@ -15,10 +15,6 @@ def register():
 def login():
     return UserController.login_user()
 
-@user_blueprint.route('/logout', methods=['GET'])
-def logout():
-    return UserController.logout_user()
-
 @user_blueprint.route('/', methods=['GET'])
 def get_users():
     return UserController.get_users()

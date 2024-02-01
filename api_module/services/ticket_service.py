@@ -26,19 +26,23 @@ class TicketService:
     @staticmethod
     def get_tickets():
         collection = g.db["tickets"]
-        tickets = collection.find()
-        return str(list(tickets))
-    
-    @staticmethod 
-    def calculate_price(ticket_type,person_type): 
-        prices = { 
-            "1H": 1.0, 
-            "2H": 1.8, 
-            "1D": 4.0, 
-            "1W": 15.0, 
-            "1M": 40.0, 
-            "6M": 200.0, 
-            "1Y": 350.0, 
+        tickets_cursor = collection.find()
+        tickets = list(tickets_cursor)
+        for ticket in tickets:
+            ticket["_id"] = str(ticket["_id"])
+            ticket["user_id"] = str(ticket["user_id"]) if ticket["user_id"] else None
+        return tickets
+
+    @staticmethod
+    def calculate_price(ticket_type,person_type):
+        prices = {
+            "1H": 1.0,
+            "2H": 1.8,
+            "1D": 4.0,
+            "1W": 15.0,
+            "1M": 40.0,
+            "6M": 200.0,
+            "1Y": 350.0,
         }
 
         type_multiplier = {
@@ -51,32 +55,33 @@ class TicketService:
         person_type = type_multiplier.get(person_type, type_multiplier.get("A"))
         return ticket_type * person_type
 
-    @staticmethod 
-    def create_name(ticket_type,person_type): 
-        duration = { 
-            "1H": "une heure", 
-            "2H": "deux heures", 
-            "1D": "une journée", 
-            "1W": "une semaine", 
-            "1M": "un mois", 
-            "6M": "six mois", 
-            "1Y": "un an", 
+    @staticmethod
+    def create_name(ticket_type,person_type):
+        duration = {
+            "1H": "1 Heure",
+            "2H": "2 Heures",
+            "1D": "1 Journée",
+            "1W": "1 Semaine",
+            "1M": "1 Mois",
+            "6M": "6 Mois",
+            "1Y": "1 Année",
         }
 
         type = {
-            "C": "enfant",   
-            "A": "adulte",    
-            "S": "étudiant", 
-            "O": "senior",
+            "C": "Enfant",
+            "A": "Adulte",
+            "S": "Etudiant",
+            "O": "Senior",
         }
-        return f"Ticket {type.get(person_type, 'adulte')}({duration.get(ticket_type, 'une heure')})"
-
+        return f"Ticket {type.get(person_type, 'Adulte')} [{duration.get(ticket_type, '1 Heure')}]"
 
     @staticmethod
     def get_ticket(ticket_id):
         collection = g.db["tickets"]
         ticket = collection.find_one({"_id": ObjectId(ticket_id)})
-        return str(ticket)
+        ticket["_id"] = str(ticket["_id"])
+        ticket["user_id"] = str(ticket["user_id"]) if ticket["user_id"] else None
+        return ticket
 
     @staticmethod
     def add_ticket(ticket_data):
@@ -96,16 +101,14 @@ class TicketService:
 
         new_ticket = Ticket(
             name=name,
-            ticket_type=ticket_data["ticket_type"],
+            ticket_type=ticket_data.get("ticket_type"),
             created_at=start_date,
             expires_at=expiration_date,
             user_id=user_id,
             price=price,
             person_type=ticket_data.get("person_type")
         )
-        collection.insert_one(new_ticket.__dict__) 
-        qr_code = TicketService.generate_qr_code(str(new_ticket._id)) 
-        return {"ticket": str(new_ticket.__dict__), "qr_code": qr_code}
+        
     
     # méthode à utiliser dans cette classe
     @staticmethod
@@ -125,15 +128,20 @@ class TicketService:
     @staticmethod
     def edit_ticket(ticket_id, updated_data):
         collection = g.db["tickets"]
+        # A Faire : lorsque l'on edit le type de ticket, il faut recalculer le prix et la date d'expiration
         updated_ticket = collection.find_one_and_update(
             {"_id": ObjectId(ticket_id)},
             {"$set": updated_data},
             return_document=True
         )
-        return str(updated_ticket)
+        updated_ticket["_id"] = str(updated_ticket["_id"])
+        updated_ticket["user_id"] = str(updated_ticket["user_id"]) if updated_ticket["user_id"] else None
+        return updated_ticket
 
     @staticmethod
     def delete_ticket(ticket_id):
         collection = g.db["tickets"]
         deleted_ticket = collection.find_one_and_delete({"_id": ObjectId(ticket_id)})
-        return str(deleted_ticket)
+        deleted_ticket["_id"] = str(deleted_ticket["_id"])
+        deleted_ticket["user_id"] = str(deleted_ticket["user_id"]) if deleted_ticket["user_id"] else None
+        return deleted_ticket
