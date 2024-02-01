@@ -3,3 +3,4 @@ Jinja2
 pymongo
 Flask-CORS
 requests
+flask_simplelogin
