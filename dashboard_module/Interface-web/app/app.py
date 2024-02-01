@@ -9,7 +9,7 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 secret_key= secrets.token_urlsafe(16)
 app.config['SECRET_KEY'] = secret_key
 
-ip="10.11.9.49"
+ip="127.0.0.1"
 api_url = "http://"+ip+":5010"
 
 from routes.web import *

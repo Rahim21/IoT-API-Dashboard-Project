@@ -2,7 +2,7 @@
 # Auteurs: BERTRAND Hugo & DRIOUCHE Sami & HAYAT Rahim & MTARFI Souhail
 # -----------------------------------------------------------------------------
 # controllers/user_controller.py
-from flask import jsonify, request, make_response
+from flask import jsonify, request
 from services.user_service import UserService
 
 class UserController:
@@ -12,7 +12,6 @@ class UserController:
         try:
             user = UserService.create_user(user_data)
             if user:
-                print(f"Je suis le controller : {user}")
                 return jsonify({"statusCode": 201, "user": user})
             else:
                 return jsonify({"statusCode": 400, "error": "L'utilisateur existe déjà."})
@@ -23,27 +22,14 @@ class UserController:
     def login_user():
         try:
             data = request.get_json()
-            user = UserService.get_user_by_credentials(data['email'], data['password'])
+            user = UserService.login_user(data['email'], data['password'])
             if user:
-                # Création d'un jeton JWT
-                auth = UserService.login_user(user['_id'])
-                if auth:
-                    return jsonify({"statusCode": 201 , "user_id": str(user['_id'])})
-                else:
-                    return jsonify({"statusCode": 500, "error": "Erreur interne lors de la création du jeton."})
+                    return jsonify({"statusCode": 201, "user": user})
             else:
                 return jsonify({"statusCode": 400, "error": "Identifiants incorrects."})
         except Exception as e:
             return jsonify({"statusCode": 500, "error": f"Erreur interne. {str(e)}"})
 
-    @staticmethod
-    def logout_user():
-        try:
-            response = UserService.logout_user(make_response())
-            return jsonify({"statusCode": 200, "message": "Déconnexion réussie.", "response":response})
-        except Exception as e:
-            return jsonify({"statusCode": 500, "error": f"Erreur interne. {str(e)}"})
-        
     @staticmethod
     def get_users():
         try:
