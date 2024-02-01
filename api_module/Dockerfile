@@ -10,7 +10,7 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Exposer le port
-EXPOSE 5010
+EXPOSE 5001
 
 # Commande par défaut pour lancer l'application
 CMD ["python", "app.py"]

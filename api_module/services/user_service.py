@@ -33,44 +33,42 @@ class UserService:
         new_user.password = generate_password_hash(new_user.password, method='pbkdf2:sha256')
 
         # Enregistrement de l'utilisateur dans la base de données MongoDB
-        collection.insert_one(new_user.__dict__)
-        user = new_user.__dict__
-        user["_id"] = str(user["_id"])
+        result = collection.insert_one(new_user.__dict__)
+        inserted_id = str(result.inserted_id)
+
+        return str(new_user.__dict__)
+
+    @staticmethod
+    def get_user_by_credentials(email, password):
+        # Récupération de l'utilisateur à l'aide du mail et mot de passe
+        collection = g.db["users"]
+        user = collection.find_one({"email": email, "password": password})
         return user
 
     @staticmethod
-    def login_user(email, password):
-        # Récupération de l'utilisateur à l'aide du mail et mot de passe
-        collection = g.db["users"]
-        # user = collection.find_one({"email": email, "password": password})
-        user_data = collection.find_one({"email": email})
-        if user_data and check_password_hash(user_data['password'], password):
-            user_data["_id"] = str(user_data["_id"])
-            del user_data['email']
-            del user_data['password']
-            return user_data
-        else:
-            return None
+    def login_user(user_id):
+        # Connexion de l'utilisateur (Jeton JWT ou Session & Cookie lib python)
+        # Bien vérifier que is_active = True
+        pass
+
+    @staticmethod
+    def logout_user(response):
+        # Méthode de désconnexion
+        pass
 
     @staticmethod
     def get_users():
         # Récupération de tous les utilisateurs de la base de données MongoDB
         collection = g.db["users"]
-        users_data = collection.find()
-        users = list(users_data)
-        for user in users:
-            user["_id"] = str(user["_id"])
-            del user['password']
-        return users
+        users = collection.find()
+        return str(list(users))
 
     @staticmethod
     def get_user_by_id(user_id):
         # Récupération de l'utilisateur à l'aide de son identifiant
         collection = g.db["users"]
         user = collection.find_one({"_id": ObjectId(user_id)})
-        user["_id"] = str(user["_id"])
-        del user['password']
-        return user
+        return str(user)
 
     @staticmethod
     def update_user(user_id, updated_data):
@@ -81,38 +79,28 @@ class UserService:
             {"$set": updated_data},
             return_document=True
         )
-        updated_user["_id"] = str(updated_user["_id"])
-        return updated_user
+        return str(updated_user)
 
     @staticmethod
     def deactivate_user(user_id):
         # Rendre inactif l'utilisateur à l'aide de son identifiant
         collection = g.db["users"]
-        user = collection.find_one({"_id": ObjectId(user_id)})
-        new_status = not user.get("is_active", False)
         deactivated_user = collection.find_one_and_update(
             {"_id": ObjectId(user_id)},
-            {"$set": {"is_active": new_status}},
+            {"$set": {"is_active": False}},
             return_document=True
         )
-        deactivated_user["_id"] = str(deactivated_user["_id"])
-        return deactivated_user
+        return str(deactivated_user)
     
     @staticmethod
     def delete_user(user_id):
         # Suppression de l'utilisateur à l'aide de son identifiant
         collection = g.db["users"]
         deleted_user = collection.find_one_and_delete({"_id": ObjectId(user_id)})
-        deleted_user["_id"] = str(deleted_user["_id"])
-        return deleted_user
+        return str(deleted_user)
 
     @staticmethod
     def get_user_tickets(user_id):
         collection = g.db["tickets"]
-        tickets_data = collection.find({"user_id": ObjectId(user_id)})
-
-        tickets = list(tickets_data)
-        for ticket in tickets:
-            ticket["_id"] = str(ticket["_id"])
-            ticket["user_id"] = str(ticket["user_id"]) if ticket["user_id"] else None
-        return tickets
+        tickets = collection.find({"user_id": ObjectId(user_id)})
+        return str(list(tickets))

@@ -4,7 +4,7 @@
 # models/ticket_model.py
 from bson import ObjectId
 class Ticket:
-    def __init__(self, name, created_at, expires_at, price=None, ticket_type=None, person_type=None, user_id=None):
+    def __init__(self, ticket_type, name, created_at, expires_at, price, person_type, user_id=None):
         self.name = name
         self.ticket_type = ticket_type
         self.created_at = created_at

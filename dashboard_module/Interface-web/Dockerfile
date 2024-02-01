@@ -2,13 +2,10 @@ FROM python:3.8
 
 WORKDIR /app
 
-# Copier l'ensemble du contenu local dans le conteneur
-COPY . .
+COPY requirements.txt /app/requirements.txt
 
-# Installer les dépendances
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Exposer le port
-EXPOSE 5020
+COPY ./app/ /app
 
 CMD ["python", "app.py"]
