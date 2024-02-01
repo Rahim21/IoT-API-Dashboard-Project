@@ -33,9 +33,22 @@ def profil():
     response = requests.get(api_url + "/tickets/")
     if response.status_code in [200, 201]:
         tickets = response.json()["tickets"]
-        ticket_json = json.dumps(tickets)
-        return render_template('profil.html', tickets=ticket_json)
+        return render_template('profil.html', tickets=tickets)
     return render_template('profil.html')
+
+@app.route("/tickets")
+def tickets():
+    response = requests.get(api_url + "/tickets/")
+    if response.status_code in [200, 201]:
+        tickets = response.json()["tickets"]
+        #format date
+        for ticket in tickets:
+            date_created = datetime.fromisoformat(ticket["created_at"])
+            date_expired = datetime.fromisoformat(ticket["expires_at"])
+            ticket["created_at"] = date_created.strftime("%d/%m/%Y %H:%M:%S")
+            ticket["expires_at"] = date_expired.strftime("%d/%m/%Y %H:%M:%S")
+        return render_template('tickets.html', tickets=tickets)
+    return render_template('tickets.html')
 
 # simulation
 @app.route("/simulation")

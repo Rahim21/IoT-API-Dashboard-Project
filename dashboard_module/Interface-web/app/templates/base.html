@@ -27,6 +27,9 @@
           {% if 'user_id' in session %}
           <li><a href="{{url_for('acheter_ticket')}}" class="nav-link px-2 text-secondary">Buy Ticket</a></li>
 
+          <li class="nav-item">
+            <a class="nav-link px-2 text-secondary" href="{{url_for('tickets')}}">Mes tickets</a>
+          </li>
 
           <li class="nav-item">
             <a class="nav-link px-2 text-secondary" href="{{url_for('administrator')}}">Admin Dashboard</a>

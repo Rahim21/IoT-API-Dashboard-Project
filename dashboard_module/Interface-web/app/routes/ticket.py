@@ -70,10 +70,10 @@ def edit_ticket():
         flash("An error occurred. Please try again later.", "danger")
         return redirect(reference)
     
-@app.route("/delete_ticket", methods=["POST"])
+@app.route("/delete_ticket", methods=["POST" , "GET"])
 def delete_ticket():
     
-    ticket_id = request.form.get("ticket_id")
+    ticket_id = request.args.get("ticket_id")
     
     response = requests.delete(api_url+"/tickets/"+ticket_id+"/delete")
     

@@ -32,6 +32,7 @@
                         <tr>
                             <th> Nom </th>
                             <th> Type </th>
+                            <th> Prix </th>
                             <th> Date d'achat</th>
                             <th> Date d'expiration </th>
                         </tr>
@@ -40,17 +41,14 @@
                         {% for ticket in tickets %}
                         <tr class="text-white">
                             <td> {{ ticket.name }} </td>
-                            <td> {{ ticket.type }} </td>
+                            <td> {{ ticket.ticket_type }} </td>
+                            <td> {{ ticket.price }} €</td>
                             <td> {{ ticket.created_at }} </td>
                             <td> {{ ticket.expires_at }} </td>
                         </tr>
                         {% endfor %}
                         </tbody>
                     </table>
-                    <div>
-                        {{ tickets }}
-                    </div>
-
                 </div>
             </div>
         </div>

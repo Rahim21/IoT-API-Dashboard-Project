@@ -424,3 +424,18 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
 .bd-mode-toggle .dropdown-menu .active .bi {
   display: block !important;
 }
+
+.div-tickets {
+  background-color: rgb(217 217 217 / 0.6);
+  color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.div-tickets span {
+  font-size: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: start;
+}

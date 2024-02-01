@@ -45,7 +45,7 @@ def login():
         
         
         if response.json().get("statusCode") in [200, 201]:
-            user_id = response.json().get("user_id")
+            user_id = response.json()["user"]["_id"]
             flash('Login successful', 'success')
             session['logged_in'] = True
             session['user_id'] = user_id
