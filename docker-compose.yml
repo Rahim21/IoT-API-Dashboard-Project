@@ -7,7 +7,7 @@ services:
       context: ./api_module
     image: api
     ports:
-      - "5010:5010"
+      - 5010:5010
     volumes:
       - ./api_module/.:/app
 
@@ -15,7 +15,7 @@ services:
     image: flask-app
     build: ./dashboard_module/Interface-web
     ports:
-      - 5000:5000
+      - 5020:5020
     volumes:
       - ./dashboard_module/Interface-web/app/.:/app
 
