@@ -3,4 +3,5 @@ Jinja2
 pymongo
 Flask-CORS
 requests
-flask_simplelogin
+qrcode
+opencv-python
