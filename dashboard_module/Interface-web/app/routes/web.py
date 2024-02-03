@@ -67,6 +67,9 @@ def tickets():
             tickets = response.json()["tickets"]
             #format date
             for ticket in tickets:
+                reponse_qr_code = requests.post(api_url + "/tickets/get_qr_code", json={"ticket_id": ticket["_id"]})   
+                #ajouter le qr code au ticket
+                ticket["qr_code"] = reponse_qr_code.json()["qr_code"]
                 date_created = datetime.fromisoformat(ticket["created_at"])
                 date_expired = datetime.fromisoformat(ticket["expires_at"])
                 ticket["created_at"] = date_created.strftime("%d/%m/%Y %H:%M:%S")

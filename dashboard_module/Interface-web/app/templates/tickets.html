@@ -6,30 +6,65 @@
 <h1 class="text-center title">Liste de vos tickets</h1>
 
 <div class="row g-6 justify-content-center border rounded-3 shadow-lg p-4 mx-5 mb-5">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">  
-        {% for ticket in tickets %}      
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% for ticket in tickets %}
         <div class="col">
             <div class="card shadow-sm">
                 <div class="card-body">
                     <div class="d-block mb-3 div-tickets">
-                    <span class="badge rounded-pill text-bg-primary"><i class="bi bi-ticket-detailed me-2"></i>Ticket :{{ ticket.name }}</span>
-                    <span class="badge rounded-pill text-bg-success"><i class="bi bi-credit-card me-2"></i>Type : {{ ticket.ticket_type }}</span>
-                    <span class="badge rounded-pill text-bg-warning"><i class="bi bi-coin me-2"></i>Prix : {{ ticket.price }} €</span>
-                    <span class="badge rounded-pill text-bg-secondary"><i class="bi bi-hourglass-top me-2"></i>Date d'achat : {{ ticket.created_at }}</span>
-                    <span class="badge rounded-pill text-bg-danger"><i class="bi bi-hourglass-bottom me-2"></i>Date d'expiration : {{ ticket.expires_at }}</span>
+                        <div class="d-flex justify-content-center border rounded-3 shadow-lg p-4 mx-5 mb-5">
+                            <img src="data:image/png;base64,{{ ticket.qr_code }}" class="img-fluid" alt="ticket"
+                                height="100" width="100">
+                        </div>
+                        <span class="badge rounded-pill text-bg-primary"><i
+                                class="bi bi-ticket-detailed me-2"></i>Ticket :{{ ticket.name }}</span>
+                        <span class="badge rounded-pill text-bg-success"><i class="bi bi-credit-card me-2"></i>Type : {{
+                            ticket.ticket_type }}</span>
+                        <span class="badge rounded-pill text-bg-warning"><i class="bi bi-coin me-2"></i>Prix : {{
+                            ticket.price }} €</span>
+                        <span class="badge rounded-pill text-bg-secondary"><i class="bi bi-hourglass-top me-2"></i>Date
+                            d'achat : {{ ticket.created_at }}</span>
+                        <span class="badge rounded-pill text-bg-danger"><i class="bi bi-hourglass-bottom me-2"></i>Date
+                            d'expiration : {{ ticket.expires_at }}</span>
                     </div>
                     <div class="btn-group mt-3">
-                        <button type="button" class="btn btn-sm btn-outline-secondary"><i class="bi bi-qr-code me-2"></i> Voir le QR code</button>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#QrcodeModal{{ ticket._id }}"
+                            class="btn btn-sm btn-outline-secondary"><i class="bi bi-qr-code me-2"></i> Voir le QR
+                            code</button>
                     </div>
                     <div class="btn-group mt-3">
-                        <button class="btn btn-sm btn-warning" data-bs-toggle = "modal" data-bs-target = "#editTicketModal{{ ticket._id }}"><i class="bi bi-pencil-square me-2"></i> Modifier</button>
-                        <a href="{{ url_for('delete_ticket', ticket_id=ticket._id) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash me-2"></i> Supprimer</a>
+                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                            data-bs-target="#editTicketModal{{ ticket._id }}"><i class="bi bi-pencil-square me-2"></i>
+                            Modifier</button>
+                        <a href="{{ url_for('delete_ticket', ticket_id=ticket._id) }}" type="button"
+                            class="btn btn-sm btn-danger"><i class="bi bi-trash me-2"></i> Supprimer</a>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Modal -->
-        <div class="modal fade" id="editTicketModal{{ ticket._id }}" tabindex="-1" aria-labelledby="editTicketModalLabel{{ ticket._id }}" aria-hidden="true">
+        <div class="modal fade" id="QrcodeModal{{ ticket._id }}" tabindex="-1"
+            aria-labelledby="QrcodeModalLabel{{ ticket._id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="QrcodeModalLabel{{ ticket._id }}">QRcode</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-dark">
+                        <img src="data:image/png;base64,{{ ticket.qr_code }}" class="img-fluid" alt="ticket"
+                            height="400" width="400">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn insc-btn">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="editTicketModal{{ ticket._id }}" tabindex="-1"
+            aria-labelledby="editTicketModalLabel{{ ticket._id }}" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header">
@@ -67,10 +102,10 @@
                                     Un type valide est requis.
                                 </div>
                             </div>
-            
+
                             <div class="col-sm-6">
                                 <label for="duree" class="form-label">Type of ticket</label>
-                                <select class="form-select"name="ticket_type">
+                                <select class="form-select" name="ticket_type">
                                     {% if ticket.ticket_type == "1H" %}
                                     <option value="1H" selected>1 h</option>
                                     {% else %}
@@ -106,11 +141,11 @@
                                     Un type valide est requis.
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                            <button type="submit" class="btn insc-btn">Enregistrer</button>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn insc-btn">Enregistrer</button>
+                    </div>
                     </form>
                 </div>
             </div>
