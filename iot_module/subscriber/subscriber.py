@@ -9,38 +9,37 @@ from paho.mqtt import client as mqtt_client
 
 broker = 'test.mosquitto.org'
 port = 1883
-topic = "top"
+topic = "topic/iot"
 # generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 100)}'
-
-
 
 ### MQTT ###
 
 # --------------------------------------------------
-
-def connect_mqtt() -> mqtt_client:
-    def on_connect(client, userdata, flags, rc):
+def on_connect(client, userdata, flags, rc):
         if rc == 0:
             print("Connected to MQTT Broker!")
         else:
             print("Failed to connect, return code %d\n", rc)
 
+def connect_mqtt() -> mqtt_client:
     client = mqtt_client.Client(client_id)
     client.on_connect = on_connect
     client.connect(broker, port)
     return client
 
 # --------------------------------------------------
-
-def subscribe(client: mqtt_client):
-    def on_message(client, userdata, msg):
+def on_message(client, userdata, msg):
         s = str(msg.payload.decode("utf-8"))
         print(f"Received `{s}` from `{msg.topic}` topic")
+
+        # connexion à l'API
+
         
+
+def subscribe(client: mqtt_client):
     client.subscribe(topic)
     client.on_message = on_message
-
 
 logging.basicConfig(level=logging.INFO)
 
@@ -66,8 +65,8 @@ def run():
     
     client.loop_start()
    
-    print("Lancement du programme de souscription CoAP.")
-    asyncio.run(main())
+    # print("Lancement du programme de souscription CoAP.")
+    # asyncio.run(main())
     try:
         while True:
             # Continue à écouter en boucle

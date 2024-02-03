@@ -8,9 +8,9 @@ import socket
 def connect_mongodb() -> MongoClient:
     # Essayer de se connecter à MongoDB en utilisant localhost (127.0.0.1)
     try:
-        mongo_client = MongoClient('mongodb://root:example@10.11.9.49:27017') # IP LOCAL
+        mongo_client = MongoClient('mongodb://root:example@10.11.10.17:27017') # IP LOCAL
         mongo_client.server_info()  # Vérifier la connexion
-        print("Connecté à MongoDB en utilisant localhost (10.11.9.49)")
+        print("Connecté à MongoDB en utilisant localhost (10.11.10.17)")
         return mongo_client
     except Exception as e1:
         print(f"Erreur lors de la connexion à MongoDB en utilisant localhost : {e1}")

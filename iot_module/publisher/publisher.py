@@ -11,7 +11,7 @@ from paho.mqtt import client as mqtt_client
 
 broker = 'test.mosquitto.org'
 port = 1883
-topic = "top"
+topic = "topic/iot"
 
 # generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 1000)}'
@@ -22,14 +22,13 @@ uuid = "069365fd-1568-4e8f-9f3c-f28c078fad6a"
 ### Initalisation MQTT et envoi de l'ID ###
 
 # Connexion au broker
-
-def connect_mqtt():
-    def on_connect(client, userdata, flags, rc):
+def on_connect(client, userdata, flags, rc):
         if rc == 0:
             print("Connected to MQTT Broker!")
         else:
             print("Failed to connect, return code %d\n", rc)
 
+def connect_mqtt():
     client = mqtt_client.Client(client_id)
     client.on_connect = on_connect
     client.connect(broker, port)
@@ -37,17 +36,15 @@ def connect_mqtt():
 
 
 # Publication d'un message sur un topic
-
 def publish(client):
     time.sleep(1)
     # Le msg ici est l'UUID reçu après décryption du QR
     result = client.publish(topic, client_id)
-
     # result: [0, 1]
     status = result[0]
 
     if status == 0:
-        print(f"Send saluut to topic `{topic}`")
+        print(f"Send `{client_id}` to topic `{topic}`")
     else:
         print(f"Failed to send message to topic {topic}")
 
@@ -86,8 +83,8 @@ async def main():
 if __name__ == '__main__':
     print("Lancement du programme de publication MQTT.")
     run()
-    print("Lancement du serveur CoAP.")
-    asyncio.run(main())
+    # print("Lancement du serveur CoAP.")
+    # asyncio.run(main())
 
 
 
