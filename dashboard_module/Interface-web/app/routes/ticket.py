@@ -7,7 +7,7 @@ def get_tickets():
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Tickets retrieved successfully.", "success")
         return redirect(reference)
     else:
@@ -23,7 +23,7 @@ def get_ticket():
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Ticket retrieved successfully.", "success")
         return redirect(reference)
     else:
@@ -35,7 +35,7 @@ def add_ticket():
     
     name = request.form.get("name")
     ticket_type = request.form.get("ticket_type")
-    user_id = current_user.id
+    user_id = session.get("user_id")
     
     data = {"name":name, "ticket_type":ticket_type, "user_id":user_id}
     
@@ -43,7 +43,7 @@ def add_ticket():
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Ticket added successfully.", "success")
         return redirect(reference)
     else:
@@ -63,23 +63,23 @@ def edit_ticket():
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Ticket edited successfully.", "success")
         return redirect(reference)
     else:
         flash("An error occurred. Please try again later.", "danger")
         return redirect(reference)
     
-@app.route("/delete_ticket", methods=["POST"])
+@app.route("/delete_ticket", methods=["POST" , "GET"])
 def delete_ticket():
     
-    ticket_id = request.form.get("ticket_id")
+    ticket_id = request.args.get("ticket_id")
     
     response = requests.delete(api_url+"/tickets/"+ticket_id+"/delete")
     
     reference = request.headers.get("Referer")
     
-    if response.status_code == 200:
+    if response.json().get("statusCode") in [200, 201]:
         flash("Ticket deleted successfully.", "success")
         return redirect(reference)
     else:

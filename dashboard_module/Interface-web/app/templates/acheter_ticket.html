@@ -7,16 +7,17 @@
 
 <div class="row g-6 justify-content-center border rounded-3 shadow-lg p-4 mx-5 mb-5">
     <div class="col-md-7 col-lg-8">
-        <form class="needs-validation" novalidate>
+        <form class="needs-validation" action="{{ url_for('add_ticket') }}" method="post" novalidate>
             <div class="row g-3 text-white">
 
                 <div class="col-sm-6">
                     <label for="type" class="form-label">ticket</label>
                     <select class="form-select" name="name">
                         <option selected>Choose a type of ticket</option>
-                        <option value="1">Normal ticket</option>
-                        <option value="2">Student ticket</option>
-                        <option value="3">Child ticket</option>
+                        <option value="C">Child ticket</option>
+                        <option value="S">Student ticket</option>
+                        <option value="A">Adult ticket</option>
+                        <option value="S">Senior ticket</option>
                     </select>
                     <div class="invalid-feedback">
                         Un type valide est requis.
@@ -31,6 +32,8 @@
                         <option value="2H">2 h</option>
                         <option value="1J">1 day</option>
                         <option value="1M">1 month</option>
+                        <option value="6M">6 months</option>
+                        <option value="1Y">1 year</option>
                     </select>
                     <div class="invalid-feedback">
                         Un type valide est requis.

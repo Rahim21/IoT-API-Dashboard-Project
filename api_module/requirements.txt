@@ -5,3 +5,4 @@ Flask-CORS
 requests
 qrcode
 opencv-python
+flask_simplelogin
