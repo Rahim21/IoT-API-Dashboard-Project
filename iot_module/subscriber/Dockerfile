@@ -2,8 +2,8 @@ FROM python:3.8-slim
 
 WORKDIR /app
 
-RUN pip install paho-mqtt==1.6.1
+COPY . .
 
-COPY ./subscriber.py .
+RUN pip install -r requirements.txt
 
 CMD ["python", "subscriber.py"]
