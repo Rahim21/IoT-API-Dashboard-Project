@@ -1,36 +1,79 @@
-import paho.mqtt.client as mqtt
-import time
+### Coap ###
+import logging
+import asyncio
+import aiocoap
+import aiocoap.numbers.codes as codes
+#MQTT
+import random
+from paho.mqtt import client as mqtt_client
 
-# Définir les détails du broker MQTT
-broker_address = "test.mosquitto.org"
+broker = 'test.mosquitto.org'
 port = 1883
-topic = "topic/test"
+topic = "topic/iot"
+# generate client ID with pub prefix randomly
+client_id = f'python-mqtt-{random.randint(0, 100)}'
 
-# Fonction de rappel lorsqu'un message est reçu
+### MQTT ###
+
+# --------------------------------------------------
+def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            print("Connected to MQTT Broker!")
+        else:
+            print("Failed to connect, return code %d\n", rc)
+
+def connect_mqtt() -> mqtt_client:
+    client = mqtt_client.Client(client_id)
+    client.on_connect = on_connect
+    client.connect(broker, port)
+    return client
+
+# --------------------------------------------------
 def on_message(client, userdata, msg):
-    print(f"Message reçu sur le sujet '{msg.topic}': {msg.payload.decode()}")
+        s = str(msg.payload.decode("utf-8"))
+        print(f"Received `{s}` from `{msg.topic}` topic")
 
-if __name__ == "__main__":
-    # Créer une instance du client MQTT
-    client = mqtt.Client()
+        # connexion à l'API
 
-    # Configurer la fonction de rappel pour la réception des messages
+        
+
+def subscribe(client: mqtt_client):
+    client.subscribe(topic)
     client.on_message = on_message
 
-    # Se connecter au broker MQTT
-    client.connect(broker_address, port=port)
+logging.basicConfig(level=logging.INFO)
 
-    # S'abonner au sujet spécifié
-    client.subscribe(topic)
+async def main():
+    protocol = await aiocoap.Context.create_client_context()
+    request = aiocoap.Message(code=codes.GET, uri="coap://localhost")
+                              
+    try:
+        response = await protocol.request(request).response
 
-    # Démarrer la boucle de communication
+    except Exception as e:
+        print("Failed to fetch resource:")
+        print(e)
+    
+    else:
+        print("Result: %s\n%r"%(response.code, response.payload))
+
+
+def run():
+    client = connect_mqtt()
+    
+    subscribe(client)
+    
     client.loop_start()
-
+   
+    # print("Lancement du programme de souscription CoAP.")
+    # asyncio.run(main())
     try:
         while True:
-            time.sleep(1)
+            # Continue à écouter en boucle
+            pass
     except KeyboardInterrupt:
-        # Arrêter la boucle de communication et déconnecter le client en cas d'interruption du programme
-        client.loop_stop()
-        client.disconnect()
-        print("Interruption du programme.")
+        print("Arrêt du programme.")
+
+if __name__ == '__main__':
+    print("Lancement du programme de souscription MQTT.")
+    run()
