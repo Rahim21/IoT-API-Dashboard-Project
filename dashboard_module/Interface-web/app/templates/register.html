@@ -14,18 +14,33 @@
         {{ csrf_token }}
         <div class="form-floating">
           <input type="text" name="username" class="form-control" required>
-          <label for="username">Nom d'utilisateur</label>
+          <label for="username">Username</label>
+        </div>
+        &nbsp;
+        <div class="form-floating">
+          <input type="text" name="firstname" class="form-control" required>
+          <label for="firstname">Firstname</label>
+        </div>
+        &nbsp;
+        <div class="form-floating">
+          <input type="text" name="lastname" class="form-control" required>
+          <label for="lastname">Lastname</label>
+        </div>
+        &nbsp;
+        <div class="form-floating">
+          <input type="email" name="email" class="form-control" required>
+          <label for="email">Email</label>
         </div>
         &nbsp;
         <div class="form-floating">
           <input type="password" name="password" class="form-control" required>
-          <label for="password">Mot de passe</label>
+          <label for="password">password</label>
         </div>
         &nbsp;
         {% if next %}<input type="hidden" name="next" value="{{next}}">{% endif %}
         <div class="form-floating">
           <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-          <label for="confirm_password">Confirmer le mot de passe</label>
+          <label for="confirm_password">Confirm password</label>
         </div>
         <input type="submit" value="Créer un compte" class="btn main-btn mt-3">
       </form>
