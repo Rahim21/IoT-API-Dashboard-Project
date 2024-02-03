@@ -61,7 +61,10 @@ class StatisticsService:
             {"$sort": {"count": -1}},
             {"$limit": 3}  # Limiter aux 3 utilisateurs les plus actifs
         ]
-        return str(list(g.db["tickets"].aggregate(query)))
+        result = list(g.db["tickets"].aggregate(query))
+        for entry in result:
+            entry["_id"] = str(entry["_id"])
+        return result
         
 
     @staticmethod 
