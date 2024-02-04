@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 # -----------------------------------------------------------------------------
 # Auteurs: BERTRAND Hugo & DRIOUCHE Sami & HAYAT Rahim & MTARFI Souhail
 # -----------------------------------------------------------------------------
@@ -29,4 +27,3 @@ def connect_mongodb() -> MongoClient:
 
     # Si toutes les tentatives de connexion échouent, retourner None
     return None
->>>>>>> 58943fdd3f70099f802fdbe437ecf2ee632edcb8

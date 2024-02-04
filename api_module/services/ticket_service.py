@@ -10,8 +10,6 @@ import qrcode
 import base64
 from io import BytesIO
 from PIL import Image
-import cv2
-import numpy as np
 
 
 class TicketService:
@@ -158,17 +156,6 @@ class TicketService:
         img.save(buffered, format="PNG")
         img_str = base64.b64encode(buffered.getvalue()).decode()
         return img_str
-    
-    @staticmethod
-    def decode_qr_code(img_base64):
-        img_bytes = base64.b64decode(img_base64)
-        img_arr = np.frombuffer(img_bytes, np.uint8)
-        img = cv2.imdecode(img_arr, cv2.IMREAD_COLOR)
-
-        detector = cv2.QRCodeDetector()
-        data, points, straight_qrcode = detector.detectAndDecode(img)
-
-        return data
     
     @staticmethod
     def get_qrcode_by_ticket_id(ticket_id):
