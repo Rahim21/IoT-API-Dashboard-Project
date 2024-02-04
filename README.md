@@ -62,11 +62,13 @@ The IoT utilizes MQTT, Mosquitto, CoAP, and Flask to manage IoT devices. It incl
 - Python and Flask to build the REST API for IoT
 
 </br>
-<img src="pictures/mqtt.png" alt="MQTT Logo" height="40">
-<img src="pictures/mosquitto.png" alt="Mosquitto Logo" height="40">
-<img src="pictures/coap.png" alt="CoAP Logo" height="40" style="padding-right:20px">
-<img src="pictures/python.png" alt="Python Logo" height="40" style="padding-right:20px">
-<img src="pictures/flask.png" alt="Flask Logo" height="40">
+<div style="display: flex; align-items: center;">
+  <img src="pictures/mqtt.png" alt="MQTT Logo" height="40">
+  <img src="pictures/mosquitto.png" alt="Mosquitto Logo" height="40">
+  <img src="pictures/coap.png" alt="CoAP Logo" height="40" style="padding-right:20px">
+  <img src="pictures/python.png" alt="Python Logo" height="40" style="padding-right:20px">
+  <img src="pictures/flask.png" alt="Flask Logo" height="40">
+</div>
 
 ### API Module
 
@@ -76,9 +78,11 @@ The API is built with Flask and utilizes a MongoDB database. Here are its main c
 - Integration with MongoDB to store API data
 
 </br>
-<img src="pictures/mongoDB.png" alt="MongoDB Logo" height="40" style="padding-right:20px">
-<img src="pictures/python.png" alt="Python Logo" height="40" style="padding-right:20px">
-<img src="pictures/flask.png" alt="Flask Logo" height="40">
+<div style="display: flex; align-items: center;">
+  <img src="pictures/mongoDB.png" alt="MongoDB Logo" height="40" style="padding-right:20px">
+  <img src="pictures/python.png" alt="Python Logo" height="40" style="padding-right:20px">
+  <img src="pictures/flask.png" alt="Flask Logo" height="40">
+</div>
 
 ### Dashboard Module
 
@@ -88,9 +92,11 @@ The Dashboard is an interactive website with data graphs and features such as ti
 - Ticket purchase, simulation, and more functionalities
 
 </br>
-<img src="pictures/chartjs.png" alt="Flask Logo" height="40" style="padding-right:20px">
-<img src="pictures/python.png" alt="Python Logo" height="40" style="padding-right:20px">
-<img src="pictures/flask.png" alt="Flask Logo" height="40">
+<div style="display: flex; align-items: center;">
+  <img src="pictures/chartjs.png" alt="Flask Logo" height="40" style="padding-right:20px">
+  <img src="pictures/python.png" alt="Python Logo" height="40" style="padding-right:20px">
+  <img src="pictures/flask.png" alt="Flask Logo" height="40">
+</div>
 
 ### System Architecture
 
