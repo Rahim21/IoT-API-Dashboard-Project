@@ -8,6 +8,16 @@ from services.user_service import UserService
 class UserController:
 
     @staticmethod
+    def migrate():
+        try:
+            migration = UserService.migrate() # bool
+            if not migration:
+                return jsonify({"statusCode": 400, "error": "Migration echouée."})
+            return jsonify({"statusCode": 200, "success": "Migration reussie."})
+        except Exception as e:
+            return jsonify({"statusCode": 500, "error": f"Erreur interne. {str(e)}"})
+
+    @staticmethod
     def register_user(user_data):
         try:
             user = UserService.create_user(user_data)

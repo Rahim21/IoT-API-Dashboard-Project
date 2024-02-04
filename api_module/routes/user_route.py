@@ -7,6 +7,10 @@ from controllers.user_controller import UserController
 
 user_blueprint = Blueprint('user', __name__, url_prefix='/users')
 
+@user_blueprint.route('/migration', methods=['POST'])
+def migrate():
+    return UserController.migrate()
+
 @user_blueprint.route('/register', methods=['POST'])
 def register():
     return UserController.register_user(request.json)

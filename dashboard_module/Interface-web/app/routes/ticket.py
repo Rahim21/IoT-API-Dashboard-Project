@@ -85,3 +85,11 @@ def delete_ticket():
     else:
         flash("An error occurred. Please try again later.", "danger")
         return redirect(reference)
+    
+@app.route("/scan_ticket", methods=["GET" , "POST"])
+def scan_ticket():
+    ticket_id = request.form.get("ticket_id")
+    
+    reponse_validate_ticket = requests.post(api_url+"/tickets/validate_ticket", json={"ticket_id":ticket_id , "route_id":session.get("user_id")})
+    
+    return render_template("simulation.html", reponse_validate_ticket = reponse_validate_ticket.json())

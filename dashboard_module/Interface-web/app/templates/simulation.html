@@ -8,20 +8,84 @@
 <div class="row g-6 justify-content-center border rounded-3 shadow-lg p-4 mx-5 mb-5">
     <div class="col-md-4 col-lg-8">
         <img src="{{ url_for('static', filename='images/porte.png') }}" alt="plan">
-        <img src="{{ url_for('static', filename='images/Stop.png') }}" alt="plan" style="height: 45px;">
-        <!-- <img src="{{ url_for('static', filename='images/Go.png') }}" alt="plan" style="position: absolute;height: 45px;top: 343px;left: 386px;"> -->
+        {% if reponse_validate_ticket %}
+        {% if reponse_validate_ticket.statusCode == 200 %}
+        <img src="{{ url_for('static', filename='images/Go.png') }}" alt="plan" style="height: 45px;">
         <div class="col-md-8 mt-5 text-white">
-            <p> Il faut scanner le QR code sur votre ticket pour pouvoir accéder </p>
-            <!-- <p> Votre ticket est valide, vous pouvez accéder </p> -->
-            <button type="button" class="btn main-btn btn-lg btn-block mt-3"> <i class="bi bi-qr-code-scan me-2"></i> Scan
-                QR
-                code</button>
+            <span class="badge bg-success"> {{ reponse_validate_ticket.success }}</span>
+            {% else %}
+            <img src="{{ url_for('static', filename='images/Stop.png') }}" alt="plan" style="height: 45px;">
+            <div class="col-md-8 mt-5 text-white">
+                <span class="badge bg-danger"> {{ reponse_validate_ticket.error }}</span>
+                {% endif %}
+                {% else %}
+                <img src="{{ url_for('static', filename='images/Stop.png') }}" alt="plan" style="height: 45px;">
+                <div class="col-md-8 mt-5 text-white">
+                    <p> Il faut scanner le QR code sur votre ticket pour pouvoir accéder </p>
+                    {% endif %}
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#ScanQrcode"
+                        class="btn main-btn btn-lg btn-block mt-3"> <i class="bi bi-qr-code-scan me-2"></i>
+                        Scan
+                        QR
+                        code</button>
+                </div>
+            </div>
         </div>
-    </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="ScanQrcode" tabindex="-1" aria-labelledby="ScanQrcode" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark text-white">
+                    <form id="uploadForm" action="{{ url_for('scan_ticket')}}" method="post"
+                        enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ScanQrcode">Scan QRcode</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-dark">
+                            <input type="file" id="imageInput" accept="image/*" onchange="decodeQRCode()">
+                            <input id="ticket_id" name="ticket_id" type="hidden" value="">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                            <button type="submit" class="btn insc-btn">Scan Qrcode</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='js/grid.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/version.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/detector.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/formatinf.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/errorlevel.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/bitmat.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/datablock.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/bmparser.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/datamask.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/rsdecoder.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/gf256poly.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/gf256.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/decoder.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/qrcode.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/findpat.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/alignpat.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/databr.js') }}" type="text/javascript"></script>
+        <script>
+            function decodeQRCode() {
+                const fileInput = document.getElementById('imageInput');
+                const ticket_id = document.getElementById('ticket_id');
+                const form = document.getElementById('uploadForm');
 
+                qrcode.callback = function (decodedData) {
+                    ticket_id.value = decodedData;
+                    //valier le formulaire
+                    form.submit();
+                };
 
+                qrcode.decode(URL.createObjectURL(fileInput.files[0]));
 
+            }
 
-</div>
-{% endblock %}
+        </script>
+        {% endblock %}

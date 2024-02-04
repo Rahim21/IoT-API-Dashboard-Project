@@ -66,17 +66,6 @@ class TicketController:
             return jsonify({"statusCode": 200, "qr_code": qr_code})
         except Exception as e:
             return jsonify({"statusCode": 500, "error": f"Erreur interne. {str(e)}"})
-
-    @staticmethod
-    def decode_qr_code(request_data):
-        qr_code = request_data.get('qr_code')
-        try:
-            ticket = TicketService.decode_qr_code(qr_code)
-            if not ticket:
-                return jsonify({"statusCode": 200, "ticket": None})
-            return jsonify({"statusCode": 200, "ticket": ticket})
-        except Exception as e:
-            return jsonify({"statusCode": 500, "error": f"Erreur interne. {str(e)}"})
     
     @staticmethod
     def verify_ticket(ticket_data):
