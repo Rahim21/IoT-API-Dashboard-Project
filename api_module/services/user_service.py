@@ -10,6 +10,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 class UserService:
 
     @staticmethod
+    def migrate():
+        # Include your migration method here
+        try:
+            UserService.migrate_default_admin()
+        except:
+            return False
+        return True
+
+    @staticmethod
     def create_user(user_data) :
         collection = g.db["users"]
         
@@ -116,3 +125,22 @@ class UserService:
             ticket["_id"] = str(ticket["_id"])
             ticket["user_id"] = str(ticket["user_id"]) if ticket["user_id"] else None
         return tickets
+    
+    @staticmethod
+    def migrate_default_admin():
+        try:
+            collection = g.db["users"]
+            user = collection.find_one({"email": "admin@ticketgo.com"})
+            if not user:
+                new_user = User(
+                    username="admin",
+                    email="admin@ticketgo.com",
+                    password="admin",
+                    role="admin",
+                    is_active=True
+                )
+                new_user.password = generate_password_hash(new_user.password, method='pbkdf2:sha256')
+                collection.insert_one(new_user.__dict__)
+        except:
+            return False
+        return True
