@@ -57,6 +57,7 @@ class StatisticsService:
     @staticmethod 
     def most_active_users(): 
         query = [ 
+            {"$match": {"user_id": {"$ne": None}}},
             {"$group": {"_id": "$user_id", "count": {"$sum": 1}}}, 
             {"$sort": {"count": -1}},
             {"$limit": 3}  # Limiter aux 3 utilisateurs les plus actifs
