@@ -1,0 +1,8 @@
+Flask
+Jinja2
+pymongo
+Flask-CORS
+requests
+qrcode
+opencv-python
+Pillow

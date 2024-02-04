@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 # -----------------------------------------------------------------------------
 # Auteurs: BERTRAND Hugo & DRIOUCHE Sami & HAYAT Rahim & MTARFI Souhail
 # -----------------------------------------------------------------------------
@@ -10,7 +8,7 @@ import socket
 def connect_mongodb() -> MongoClient:
     # Essayer de se connecter à MongoDB en utilisant localhost (127.0.0.1)
     try:
-        mongo_client = MongoClient('mongodb://root:example@10.11.9.49:27017') # IP LOCAL
+        mongo_client = MongoClient('mongodb://root:example@10.11.10.17:27017') # IP LOCAL
         mongo_client.server_info()  # Vérifier la connexion
         print("Connecté à MongoDB en utilisant localhost (10.11.9.49)")
         return mongo_client
@@ -29,4 +27,3 @@ def connect_mongodb() -> MongoClient:
 
     # Si toutes les tentatives de connexion échouent, retourner None
     return None
->>>>>>> 58943fdd3f70099f802fdbe437ecf2ee632edcb8
