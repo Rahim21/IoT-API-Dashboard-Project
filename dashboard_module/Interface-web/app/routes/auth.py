@@ -46,9 +46,11 @@ def login():
         
         if response.json().get("statusCode") in [200, 201]:
             user_id = response.json()["user"]["_id"]
+            user_role = response.json()["user"]["role"]
             flash('Login successful', 'success')
             session['logged_in'] = True
             session['user_id'] = user_id
+            session['user_role'] = user_role
             return redirect(url_for('index'))
         else:
             flash('An error occurred. Please try again later.', 'danger')
@@ -138,9 +140,9 @@ def get_user_tickets():
         flash("An error occurred. Please try again later.", "danger")
         return redirect(reference)
 
-@app.route("/deactivate_user/<user_id>", methods=["POST" , "GET"])
+@app.route("/deactivate_user/", methods=["POST" , "GET"])
 def deactivate_user():
-    user_id = request.form.get("user_id")
+    user_id = request.args.get("user_id")
     
     response = requests.put(api_url+"/users/"+user_id+"/deactivate")
     
@@ -153,10 +155,10 @@ def deactivate_user():
         flash("An error occurred. Please try again later.", "danger")
         return redirect(reference)
     
-@app.route("/delete_user/<user_id>", methods=["POST" , "GET"])
+@app.route("/delete_user/", methods=["POST" , "GET"])
 def delete_user():
     
-    user_id = request.form.get("user_id")
+    user_id = request.args.get("user_id")
     
     response = requests.delete(api_url+"/users/"+user_id+"/delete")
     
