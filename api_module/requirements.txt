@@ -4,4 +4,5 @@ pymongo
 Flask-CORS
 requests
 qrcode
+opencv-python
 Pillow

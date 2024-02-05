@@ -1,9 +1,7 @@
-### Coap ###
 import logging
 import asyncio
 import aiocoap
 import aiocoap.numbers.codes as codes
-#MQTT
 import random
 from paho.mqtt import client as mqtt_client
 
@@ -13,9 +11,8 @@ topic = "topic/iot"
 # generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 100)}'
 
-### MQTT ###
+API_URL = "http://localhost:8000/api/iot/"
 
-# --------------------------------------------------
 def on_connect(client, userdata, flags, rc):
         if rc == 0:
             print("Connected to MQTT Broker!")
@@ -28,7 +25,6 @@ def connect_mqtt() -> mqtt_client:
     client.connect(broker, port)
     return client
 
-# --------------------------------------------------
 def on_message(client, userdata, msg):
         s = str(msg.payload.decode("utf-8"))
         print(f"Received `{s}` from `{msg.topic}` topic")
@@ -60,16 +56,13 @@ async def main():
 
 def run():
     client = connect_mqtt()
-    
     subscribe(client)
-    
     client.loop_start()
    
     # print("Lancement du programme de souscription CoAP.")
     # asyncio.run(main())
     try:
         while True:
-            # Continue à écouter en boucle
             pass
     except KeyboardInterrupt:
         print("Arrêt du programme.")
