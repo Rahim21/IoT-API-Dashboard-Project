@@ -6,3 +6,4 @@ requests
 qrcode
 opencv-python
 Pillow
+python-dotenv

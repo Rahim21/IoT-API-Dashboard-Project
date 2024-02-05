@@ -8,6 +8,228 @@
 
 <div class="row g-6 justify-content-center border rounded-3 shadow-lg p-4 mx-5 mb-5">
 
+<!-- Inclure Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Div pour les graphiques -->
+<div style="display: flex; justify-content: space-around; margin: 20px 0;">
+    <div style="width: 35rem;">
+        <div style="margin-bottom: 20px;">
+            <canvas id="ticketTypeChart" style="height: 200px;"></canvas>
+        </div>
+        <div>
+            <canvas id="multiStatsChart" style="height: 200px;"></canvas>
+        </div>
+    </div>
+    <div style="width: 30rem;">
+        <canvas id="ticketPriceChart" style="height: 400px;"></canvas>
+    </div>
+</div>
+
+<script>
+// Données fictives
+const ticketTypes = {
+    "C": "Enfant",
+    "A": "Adulte",
+    "S": "Etudiant",
+    "O": "Senior",
+};
+
+// Graphique pour les types de tickets
+new Chart(document.getElementById('ticketTypeChart'), {
+    type: 'bar',
+    data: {
+        labels: Object.values(ticketTypes),
+        datasets: [{
+            label: 'Nombre de tickets',
+            data: Object.keys(ticketTypes).map(() => Math.floor(Math.random() * 50)),
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        },
+        animation: {
+            duration: 2000
+        }
+    }
+});
+
+// Données pour le prix des tickets
+const durations = {
+    "1H": "1 Heure",
+    "2H": "2 Heures",
+    "1D": "1 Journée",
+    "1W": "1 Semaine",
+    "1M": "1 Mois",
+    "6M": "6 Mois",
+    "1Y": "1 Année",
+};
+
+// Prix de chaque ticket individuel
+const ticketPrices = {
+    "Enfant": 5.0,
+    "Adulte": 8.0,
+    "Senior": 6.0,
+    "Etudiant": 7.0,
+};
+
+// Recette générée pour chaque type de ticket et durée d'abonnement
+// Nouvelles données de recettes générées pour chaque type de ticket et durée d'abonnement
+const revenueData = {
+    "1 Heure": {
+        "Enfant": Math.floor((Math.random() * 20) + 30), // Entre 30 et 50
+        "Adulte": Math.floor((Math.random() * 30) + 50), // Entre 50 et 80
+        "Senior": Math.floor((Math.random() * 20) + 40), // Entre 40 et 60
+        "Etudiant": Math.floor((Math.random() * 20) + 30) // Entre 30 et 50
+    },
+    "2 Heures": {
+        "Enfant": Math.floor((Math.random() * 40) + 60), // Entre 60 et 100
+        "Adulte": Math.floor((Math.random() * 40) + 80), // Entre 80 et 120
+        "Senior": Math.floor((Math.random() * 30) + 60), // Entre 60 et 90
+        "Etudiant": Math.floor((Math.random() * 30) + 50) // Entre 50 et 80
+    },
+    "1 Journée": {
+        "Enfant": Math.floor((Math.random() * 100) + 150), // Entre 150 et 250
+        "Adulte": Math.floor((Math.random() * 100) + 200), // Entre 200 et 300
+        "Senior": Math.floor((Math.random() * 80) + 150), // Entre 150 et 230
+        "Etudiant": Math.floor((Math.random() * 60) + 100) // Entre 100 et 160
+    },
+    "1 Semaine": {
+        "Enfant": Math.floor((Math.random() * 200) + 300), // Entre 300 et 500
+        "Adulte": Math.floor((Math.random() * 200) + 400), // Entre 400 et 600
+        "Senior": Math.floor((Math.random() * 150) + 300), // Entre 300 et 450
+        "Etudiant": Math.floor((Math.random() * 100) + 200) // Entre 200 et 300
+    },
+    "1 Mois": {
+        "Enfant": Math.floor((Math.random() * 400) + 700), // Entre 700 et 1100
+        "Adulte": Math.floor((Math.random() * 400) + 900), // Entre 900 et 1300
+        "Senior": Math.floor((Math.random() * 300) + 500), // Entre 500 et 800
+        "Etudiant": Math.floor((Math.random() * 200) + 400) // Entre 400 et 600
+    },
+    "6 Mois": {
+        "Enfant": Math.floor((Math.random() * 1000) + 3000), // Entre 3000 et 4000
+        "Adulte": Math.floor((Math.random() * 1000) + 4000), // Entre 4000 et 5000
+        "Senior": Math.floor((Math.random() * 500) + 3000), // Entre 3000 et 3500
+        "Etudiant": Math.floor((Math.random() * 500) + 2000) // Entre 2000 et 2500
+    },
+    "1 Année": {
+        "Enfant": Math.floor((Math.random() * 2000) + 6000), // Entre 6000 et 8000
+        "Adulte": Math.floor((Math.random() * 2000) + 8000), // Entre 8000 et 10000
+        "Senior": Math.floor((Math.random() * 1000) + 6000), // Entre 6000 et 7000
+        "Etudiant": Math.floor((Math.random() * 1000) + 4000) // Entre 4000 et 5000
+    }
+};
+
+
+// Couleurs utilisées pour le graphique
+const backgroundColors = [
+    'rgba(255, 99, 132, 0.2)',
+    'rgba(54, 162, 235, 0.2)',
+    'rgba(255, 206, 86, 0.2)',
+    'rgba(75, 192, 192, 0.2)',
+    'rgba(153, 102, 255, 0.2)',
+    'rgba(255, 159, 64, 0.2)',
+    'rgba(255, 99, 132, 0.2)'
+];
+const borderColors = [
+    'rgba(255, 99, 132, 1)',
+    'rgba(54, 162, 235, 1)',
+    'rgba(255, 206, 86, 1)',
+    'rgba(75, 192, 192, 1)',
+    'rgba(153, 102, 255, 1)',
+    'rgba(255, 159, 64, 1)',
+    'rgba(255, 99, 132, 1)'
+];
+
+// Données pour le graphique
+const chartData = {
+    labels: Object.values(ticketTypes),
+    datasets: Object.keys(ticketPrices).map((ticketType, index) => {
+        return {
+            label: ticketType,
+            data: Object.values(revenueData).map(duration => duration[ticketType]),
+            backgroundColor: backgroundColors[index],
+            borderColor: borderColors[index],
+            borderWidth: 1
+        };
+    })
+};
+
+// Graphique pour les prix des tickets
+new Chart(document.getElementById('ticketPriceChart'), {
+    type: 'doughnut',
+    data: chartData,
+    options: {
+        animation: {
+            animateScale: true,
+            animateRotate: true
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    // Mapping des couleurs aux labels
+                    generateLabels: function(chart) {
+                        const data = chart.data;
+                        if (data.labels.length && data.datasets.length) {
+                            return data.labels.map(function(label, index) {
+                                return {
+                                    text: label,
+                                    fillStyle: backgroundColors[index], // Couleur en fonction de l'index
+                                    strokeStyle: borderColors[index], // Couleur du bord en fonction de l'index
+                                    lineWidth: 1,
+                                    hidden: false,
+                                    index: index
+                                };
+                            });
+                        }
+                        return [];
+                    }
+                }
+            }
+        }
+    }
+});
+
+
+// Graphique pour plusieurs statistiques
+new Chart(document.getElementById('multiStatsChart'), {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+            label: 'Revenus par type de billet',
+            data: Array.from({length: 12}, () => Math.floor(Math.random() * 100)), // Données aléatoires
+            borderColor: 'rgba(75, 192, 192, 1)',
+            fill: false
+        }, {
+            label: 'Analyse de la rentabilité',
+            data: Array.from({length: 12}, () => Math.floor(Math.random() * 100)), // Données aléatoires
+            borderColor: 'rgba(153, 102, 255, 1)',
+            fill: false
+        }]
+    },
+    options: {
+        scales: {
+            x: {
+                type: 'category' // Utilisation d'une échelle catégorielle pour les mois
+            },
+            y: {
+                beginAtZero: true
+            }
+        },
+        animation: {
+            duration: 2000
+        }
+    }
+});
+</script>
+
     <!-- Earnings (Monthly) Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
