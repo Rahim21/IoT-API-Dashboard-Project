@@ -35,16 +35,28 @@ def dashboard():
 # Route de la page administrateur
 @app.route("/administrator")
 def administrator():
-    if "user_id" in session:
-        response = requests.get(api_url+"/users/")
-        
-        if response.status_code == 200:
-            users = response.json()
-            return render_template("administrator.html", users=users)
+    if "user_id" in session and session["user_role"] == "admin":
+        response_users = requests.get(api_url+"/users/")
+        if response_users.status_code == 200:
+            response = requests.get(api_url + "/tickets/")
+            if response.status_code in [200, 201]:
+                tickets = response.json()["tickets"]
+                #format date
+                for ticket in tickets:
+                    reponse_qr_code = requests.post(api_url + "/tickets/get_qr_code", json={"ticket_id": ticket["_id"]})   
+                    #ajouter le qr code au ticket
+                    ticket["qr_code"] = reponse_qr_code.json()["qr_code"]
+                    date_created = datetime.fromisoformat(ticket["created_at"])
+                    date_expired = datetime.fromisoformat(ticket["expires_at"])
+                    ticket["created_at"] = date_created.strftime("%d/%m/%Y %H:%M:%S")
+                    ticket["expires_at"] = date_expired.strftime("%d/%m/%Y %H:%M:%S")
+                users = response_users.json()
+                return render_template("administrator.html", users=users,tickets=tickets)
         else:
             flash("An error occurred. Please try again later.", "danger")
         return render_template("administrator.html")
     else:
+        flash("You must be logged in to access this page.", "danger")
         return redirect(url_for('login'))
 
 # mon profils
@@ -62,7 +74,8 @@ def profil():
 @app.route("/tickets")
 def tickets():
     if "user_id" in session:
-        response = requests.get(api_url + "/tickets/")
+        user_id = session["user_id"]
+        response = requests.get(api_url+"/users/"+user_id+"/tickets")
         if response.status_code in [200, 201]:
             tickets = response.json()["tickets"]
             #format date

@@ -4,13 +4,19 @@ import requests
 from flask import jsonify, render_template, request, flash, redirect, url_for, session
 import json
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 secret_key= secrets.token_urlsafe(16)
 app.config['SECRET_KEY'] = secret_key
 
-ip="10.11.10.17"
-api_url = "http://"+ip+":5010"
+# Chargement des variables d'environnement depuis le fichier .env
+load_dotenv()
+# Récupération de l'adresse IP du serveur depuis les variables d'environnement
+server_ip = os.getenv("SERVER_IP")
+api_url = f"http://{server_ip}:5010"
 
 from routes.web import *
 from routes.auth import *

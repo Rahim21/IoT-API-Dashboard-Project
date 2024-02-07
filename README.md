@@ -120,7 +120,11 @@ The IoT-API-Dashboard Project is an integrated system designed to manage IoT dev
 
 The project provides advanced data analytics and visualizations through the dashboard, offering enhanced insights and management capabilities for users.
 
-![Project Screenshot][liste_ticket]
+![Project Ticket List][liste_ticket]
+
+This dashboard provides a comprehensive view of key statistics for the transportation service, enabling data-driven decision making and strategic planning."
+
+![Project Stats][stats]
 
 <p align="right">(<a href="#iot-api-dashboard-project">back to top</a>)</p>
 
@@ -205,3 +209,4 @@ Thank you to the following contributors for their valuable contributions to this
 [logo]: pictures/logo.png
 [simulation]: pictures/simulation.png
 [schema]: pictures/schema.png
+[stats]: pictures/stats.png

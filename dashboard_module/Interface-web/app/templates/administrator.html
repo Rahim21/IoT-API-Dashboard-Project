@@ -9,7 +9,7 @@
 
 <div class="row g-6 justify-content-center border rounded-3 shadow-lg p-4 mx-5 mb-5">
     <div class="col-md-7 col-lg-8">
-        <table class="table table-dark">
+        <table class="table table-dark text-white">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Username</th>
@@ -22,30 +22,30 @@
                 </tr>
             </thead>
             <tbody>
-                {% for user_data in users %}
+                {% for user_data in users.users %}
                 <tr>
                     <td>{{ user_data.username }}</td>
                     <td>{{ user_data.email }}</td>
-                    <td>{{ user_data.first_name }}</td>
-                    <td>{{ user_data.last_name }}</td>
+                    <td>{{ user_data.firstname }}</td>
+                    <td>{{ user_data.lastname }}</td>
                     <td>{{ user_data.role }}</td>
                     <td>
-                        {% if user_data.username != get_username() %}
-                        {% if user_data.role == 'admin' %}
-                        <a href="{{ url_for('deactivate_user', user_id=user_data.id) }}">
-                            <button class="btn btn-secondary" type="button">activate</button>
+                        {% if user_data._id != session['user_id'] %}
+                        {% if user_data.is_active == false %}
+                        <a href="{{ url_for('deactivate_user', user_id=user_data._id) }}">
+                            <button class="btn btn-success" type="button">activate</button>
                         </a>
                         {% else %}
 
-                        <a href="{{ url_for('deactivate_user', user_id=user_data.id) }}">
-                            <button class="btn btn-success" type="button">disable</button>
+                        <a href="{{ url_for('deactivate_user', user_id=user_data._id) }}">
+                            <button class="btn btn-danger" type="button">disable</button>
                         </a>
                         {% endif %}
                         {% endif %}
                     </td>
                     <td>
-                        {% if user_data.username != get_username() %}
-                        <a href="{{ url_for('delete_user', user_id=user_data.id) }}">
+                        {% if user_data._id != session['user_id'] %}
+                        <a href="{{ url_for('delete_user', user_id=user_data._id) }}">
                             <button class="btn btn-danger" type="button">Delete</button>
                         </a>
                         {% endif %}
@@ -54,6 +54,158 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+</div>
+
+<h1 class="text-center title">Liste de tout les tickets</h1>
+
+<div class="row g-6 justify-content-center border rounded-3 shadow-lg p-4 mx-5 mb-5">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% for ticket in tickets %}
+        <div class="col">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-block mb-3 div-tickets">
+                        <div class="d-flex justify-content-center border rounded-3 shadow-lg p-4 mx-5 mb-5">
+                            <img src="data:image/png;base64,{{ ticket.qr_code }}" class="img-fluid" alt="ticket"
+                                height="100" width="100">
+                        </div>
+                        <span class="badge rounded-pill text-bg-primary"><i
+                                class="bi bi-ticket-detailed me-2"></i>Ticket :{{ ticket.name }}</span>
+                        <span class="badge rounded-pill text-bg-success"><i class="bi bi-credit-card me-2"></i>Type : {{
+                            ticket.ticket_type }}</span>
+                        <span class="badge rounded-pill text-bg-warning"><i class="bi bi-coin me-2"></i>Prix : {{
+                            ticket.price }} €</span>
+                        <span class="badge rounded-pill text-bg-secondary"><i class="bi bi-hourglass-top me-2"></i>Date
+                            d'achat : {{ ticket.created_at }}</span>
+                        <span class="badge rounded-pill text-bg-danger"><i class="bi bi-hourglass-bottom me-2"></i>Date
+                            d'expiration : {{ ticket.expires_at }}</span>
+                    </div>
+                    <div class="btn-group mt-3">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#QrcodeModal{{ ticket._id }}"
+                            class="btn btn-sm btn-outline-secondary"><i class="bi bi-qr-code me-2"></i> Voir le QR
+                            code</button>
+                    </div>
+                    <div class="btn-group mt-3">
+                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                            data-bs-target="#editTicketModal{{ ticket._id }}"><i class="bi bi-pencil-square me-2"></i>
+                            Modifier</button>
+                        <a href="{{ url_for('delete_ticket', ticket_id=ticket._id) }}" type="button"
+                            class="btn btn-sm btn-danger"><i class="bi bi-trash me-2"></i> Supprimer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="QrcodeModal{{ ticket._id }}" tabindex="-1"
+            aria-labelledby="QrcodeModalLabel{{ ticket._id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="QrcodeModalLabel{{ ticket._id }}">QRcode</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-dark">
+                        <img src="data:image/png;base64,{{ ticket.qr_code }}" class="img-fluid" alt="ticket"
+                            height="400" width="400">
+                    </div>
+                    <div class="modal-footer">
+                        <a download="ticket_{{ ticket._id }}.png" href="data:image/png;base64,{{ ticket.qr_code }}"
+                            class="btn insc-btn">Télécharger</a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="editTicketModal{{ ticket._id }}" tabindex="-1"
+            aria-labelledby="editTicketModalLabel{{ ticket._id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editTicketModalLabel{{ ticket._id }}">Modifier le ticket</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-dark">
+                        <form action="{{ url_for('edit_ticket')}}" method="post">
+                            <input type="hidden" name="ticket_id" value="{{ ticket._id }}">
+                            <div class="col-sm-6">
+                                <label for="type" class="form-label">ticket</label>
+                                <select class="form-select" name="name">
+                                    {% if ticket.name == "C" %}
+                                    <option value="C" selected>Child ticket</option>
+                                    {% else %}
+                                    <option value="C">Child ticket</option>
+                                    {% endif %}
+                                    {% if ticket.name == "S" %}
+                                    <option value="S" selected>Student ticket</option>
+                                    {% else %}
+                                    <option value="S">Student ticket</option>
+                                    {% endif %}
+                                    {% if ticket.name == "A" %}
+                                    <option value="A" selected>Adult ticket</option>
+                                    {% else %}
+                                    <option value="A">Adult ticket</option>
+                                    {% endif %}
+                                    {% if ticket.name == "S" %}
+                                    <option value="S" selected>Senior ticket</option>
+                                    {% else %}
+                                    <option value="S">Senior ticket</option>
+                                    {% endif %}
+                                </select>
+                                <div class="invalid-feedback">
+                                    Un type valide est requis.
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="duree" class="form-label">Type of ticket</label>
+                                <select class="form-select" name="ticket_type">
+                                    {% if ticket.ticket_type == "1H" %}
+                                    <option value="1H" selected>1 h</option>
+                                    {% else %}
+                                    <option value="1H">1 h</option>
+                                    {% endif %}
+                                    {% if ticket.ticket_type == "2H" %}
+                                    <option value="2H" selected>2 h</option>
+                                    {% else %}
+                                    <option value="2H">2 h</option>
+                                    {% endif %}
+                                    {% if ticket.ticket_type == "1J" %}
+                                    <option value="1J" selected>1 day</option>
+                                    {% else %}
+                                    <option value="1J">1 day</option>
+                                    {% endif %}
+                                    {% if ticket.ticket_type == "1M" %}
+                                    <option value="1M" selected>1 month</option>
+                                    {% else %}
+                                    <option value="1M">1 month</option>
+                                    {% endif %}
+                                    {% if ticket.ticket_type == "6M" %}
+                                    <option value="6M" selected>6 months</option>
+                                    {% else %}
+                                    <option value="6M">6 months</option>
+                                    {% endif %}
+                                    {% if ticket.ticket_type == "1Y" %}
+                                    <option value="1Y" selected>1 year</option>
+                                    {% else %}*
+                                    <option value="1Y">1 year</option>
+                                    {% endif %}
+                                </select>
+                                <div class="invalid-feedback">
+                                    Un type valide est requis.
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn insc-btn">Enregistrer</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
