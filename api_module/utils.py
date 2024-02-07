@@ -6,14 +6,10 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 
-<<<<<<< HEAD
-ADDR_IP = "10.11.10.17"
-=======
 # Chargement des variables d'environnement depuis le fichier .env
 load_dotenv()
 # Récupération de l'adresse IP du serveur depuis les variables d'environnement
 server_ip = os.getenv("SERVER_IP")
->>>>>>> d2538cb63b89b41ada59795c02723e5a0c7d7618
 
 def connect_mongodb() -> MongoClient:
     # Connexion à MongoDB en utilisant l'ip du fichier d'environnement

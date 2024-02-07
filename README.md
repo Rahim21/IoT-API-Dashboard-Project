@@ -100,7 +100,7 @@ The Dashboard is an interactive website with data graphs and features such as ti
 
 ### System Architecture
 
-![Project Schema][schema]
+![Project Diagramme][project_diagram]
 
 ---
 
@@ -118,6 +118,8 @@ The IoT-API-Dashboard Project is an integrated system designed to manage IoT dev
 
 - **API Integration:** The project utilizes APIs to manage and retrieve data related to tickets and other system functionalities. This ensures smooth communication and data exchange between different components of the system.
 
+![API Diagram][api_diagram]
+
 The project provides advanced data analytics and visualizations through the dashboard, offering enhanced insights and management capabilities for users.
 
 ![Project Ticket List][liste_ticket]
@@ -128,11 +130,11 @@ This dashboard provides a comprehensive view of key statistics for the transport
 
 <p align="right">(<a href="#iot-api-dashboard-project">back to top</a>)</p>
 
-## Getting Started
+## `Getting Started`
 
-Provide instructions on setting up the project locally.
+To set up the project locally, follow these steps:
 
-### Installation
+### `Installation`
 
 1. **Clone the Repository**: Clone the VideoLibManager repository to your local machine:
 
@@ -141,11 +143,22 @@ Provide instructions on setting up the project locally.
    ```
 
 2. **Navigate to Project Directory**: Move into the project directory:
+
    ```bash
    cd IoT-API-Dashboard-Project
    ```
 
-## Docker Usage
+3. **Configure Environment Variables**: Edit the **.env** file located at the root of the project. By default, the '**SERVER_IP**' variable is set to '**127.0.0.1**', which is the localhost address. Update this variable with the appropriate IP address if necessary.
+
+   ```bash
+   vim .env
+   ```
+
+   then escape and save the file by typing `:wq` and pressing `Enter`.
+
+## `Docker Usage`
+
+For Docker usage, follow these steps:
 
 1. **Build Docker Containers**: To build the Docker containers, execute:
 
@@ -164,7 +177,7 @@ Provide instructions on setting up the project locally.
    sudo docker-compose down
    ```
 
-## Prerequisites
+## `Prerequisites`
 
 List any prerequisites or dependencies users need to have before using the project.
 
@@ -176,7 +189,7 @@ List any prerequisites or dependencies users need to have before using the proje
 
 ---
 
-### Contributors
+### `Contributors`
 
 Thank you to the following contributors for their valuable contributions to this project:
 
@@ -209,4 +222,6 @@ Thank you to the following contributors for their valuable contributions to this
 [logo]: pictures/logo.png
 [simulation]: pictures/simulation.png
 [schema]: pictures/schema.png
+[project_diagram]: pictures/project_diagram.png
+[api_diagram]: pictures/api_diagram.png
 [stats]: pictures/stats.png
