@@ -5,7 +5,7 @@
 from pymongo import MongoClient
 import socket
 
-ADDR_IP = "10.11.9.49"
+ADDR_IP = "10.11.10.17"
 
 def connect_mongodb() -> MongoClient:
     # Essayer de se connecter à MongoDB en utilisant localhost (127.0.0.1)
